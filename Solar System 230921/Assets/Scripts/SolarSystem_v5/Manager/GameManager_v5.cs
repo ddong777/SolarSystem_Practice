@@ -49,6 +49,11 @@ public class GameManager_v5 : _Manager_v5
     /// 1. 씬 구성
     /// 2. 사용자에의한 데이터 변경(씬 재구성)
     ///     1) 에디터 UI를 통한 orb 데이터 변경
+    ///         - 에디터 UI 업데이트
+    ///         - 셀랙터 UI 목록 업데이트
+    ///         - Orb Data 매니저 업데이트
+    ///         - SolarSystem의 해당하는 Orb Update
+    ///         - 서버데이터 업데이트
     /// 3. 서버에 의한 데이터 변경(씬 재구성)
     /// </summary>
     private void Init()
