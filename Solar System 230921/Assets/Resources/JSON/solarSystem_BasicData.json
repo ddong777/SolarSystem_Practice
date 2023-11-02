@@ -1,0 +1,112 @@
+{
+  "solarSystem_BasicData": [
+    {
+      "id": "0",
+      "orbType": "0",
+      "isCenterOrb": "1",
+      "orbPosX": "0",
+      "orbRotZ": "7.25",
+      "orbSize": "40",
+      "spinDir": "1",
+      "spinSpeed": "1",
+      "orbitDir": "0",
+      "orbitSpeed": "0"
+    },
+    {
+      "id": "1",
+      "orbType": "1",
+      "isCenterOrb": "0",
+      "orbPosX": "59",
+      "orbRotZ": "-0.01",
+      "orbSize": "0.4",
+      "spinDir": "1",
+      "spinSpeed": "0",
+      "orbitDir": "0",
+      "orbitSpeed": "0"
+    },
+    {
+      "id": "2",
+      "orbType": "2",
+      "isCenterOrb": "0",
+      "orbPosX": "62",
+      "orbRotZ": "-177.3",
+      "orbSize": "0.9",
+      "spinDir": "0",
+      "spinSpeed": "0",
+      "orbitDir": "0",
+      "orbitSpeed": "0"
+    },
+    {
+      "id": "3",
+      "orbType": "3",
+      "isCenterOrb": "0",
+      "orbPosX": "65",
+      "orbRotZ": "-23.26",
+      "orbSize": "1",
+      "spinDir": "1",
+      "spinSpeed": "0",
+      "orbitDir": "0",
+      "orbitSpeed": "0"
+    },
+    {
+      "id": "4",
+      "orbType": "4",
+      "isCenterOrb": "0",
+      "orbPosX": "70",
+      "orbRotZ": "-25.19",
+      "orbSize": "0.5",
+      "spinDir": "1",
+      "spinSpeed": "0",
+      "orbitDir": "0",
+      "orbitSpeed": "0"
+    },
+    {
+      "id": "5",
+      "orbType": "5",
+      "isCenterOrb": "0",
+      "orbPosX": "107",
+      "orbRotZ": "-3.13",
+      "orbSize": "11.2",
+      "spinDir": "1",
+      "spinSpeed": "0",
+      "orbitDir": "0",
+      "orbitSpeed": "0"
+    },
+    {
+      "id": "6",
+      "orbType": "6",
+      "isCenterOrb": "0",
+      "orbPosX": "150",
+      "orbRotZ": "-26.73",
+      "orbSize": "9.3",
+      "spinDir": "1",
+      "spinSpeed": "0",
+      "orbitDir": "0",
+      "orbitSpeed": "0"
+    },
+    {
+      "id": "7",
+      "orbType": "7",
+      "isCenterOrb": "0",
+      "orbPosX": "247",
+      "orbRotZ": "-97",
+      "orbSize": "4",
+      "spinDir": "1",
+      "spinSpeed": "0",
+      "orbitDir": "0",
+      "orbitSpeed": "0"
+    },
+    {
+      "id": "8",
+      "orbType": "8",
+      "isCenterOrb": "0",
+      "orbPosX": "356",
+      "orbRotZ": "-29.32",
+      "orbSize": "3.9",
+      "spinDir": "1",
+      "spinSpeed": "0",
+      "orbitDir": "0",
+      "orbitSpeed": "0"
+    }
+  ]
+}

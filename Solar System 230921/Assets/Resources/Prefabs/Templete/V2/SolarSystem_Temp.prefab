@@ -1,0 +1,262 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2044691982029682883
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8758002429247634931}
+  - component: {fileID: 2044691982029682882}
+  m_Layer: 0
+  m_Name: SolarSystem_Temp
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8758002429247634931
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2044691982029682883}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 3817036330546696229}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2044691982029682882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2044691982029682883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3985457a23d6abe4881051c73ee80bdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  orbFeaturePrefab:
+  - {fileID: 1504996923221869695, guid: 04b90f8f997f08244931dc4234518526, type: 3}
+  - {fileID: 6114432345781313599, guid: bda128aa20e1c314995f49bebda669b1, type: 3}
+  - {fileID: 2131018131243783721, guid: d09268538aac83b4dad270bfda4f684f, type: 3}
+  - {fileID: 2720712869127518820, guid: 8931a72ee93f7d4488d2eacb6129b596, type: 3}
+  - {fileID: 3496466404774963158, guid: fd5cd5f72d024ee46b7a853b5821c28c, type: 3}
+  - {fileID: 8143080193677011892, guid: 6578639a5ef0c6641bd6e831cd813e76, type: 3}
+  - {fileID: 4951114201892078626, guid: c3ee3caa2bb381046b565a9db2aad609, type: 3}
+  - {fileID: 3988124415815736136, guid: 50decabd9c914874eb6a85f7145a9773, type: 3}
+  - {fileID: 3258490110898661736, guid: 8012d376336bd4a45a6e83ac10f02486, type: 3}
+  starData:
+    orbType: 0
+    orbPosX: 0
+    orbRotZ: 7.25
+    orbSize: 50
+    spinDir: 1
+    spinSpeed: 10
+    orbitDir: 1
+    orbitSpeed: 0
+    orbTrn: {fileID: 3817036330546696229}
+    orbAxis: {fileID: 5345290530548407439}
+  planetParentTrn: {fileID: 679029610621690682}
+  planetSamplePrefab: {fileID: 1211947168394477141, guid: 96e55abfbf355f6498369b359d24155f, type: 3}
+  planetData:
+  - orbType: 1
+    orbPosX: 59
+    orbRotZ: -0.01
+    orbSize: 0.4
+    spinDir: 1
+    spinSpeed: 0
+    orbitDir: 0
+    orbitSpeed: 0
+    orbTrn: {fileID: 0}
+    orbAxis: {fileID: 0}
+  - orbType: 2
+    orbPosX: 62
+    orbRotZ: -177.3
+    orbSize: 0.9
+    spinDir: 0
+    spinSpeed: 0
+    orbitDir: 0
+    orbitSpeed: 0
+    orbTrn: {fileID: 0}
+    orbAxis: {fileID: 0}
+  - orbType: 3
+    orbPosX: 65
+    orbRotZ: -23.26
+    orbSize: 1
+    spinDir: 1
+    spinSpeed: 0
+    orbitDir: 0
+    orbitSpeed: 0
+    orbTrn: {fileID: 0}
+    orbAxis: {fileID: 0}
+  - orbType: 4
+    orbPosX: 70
+    orbRotZ: -25.19
+    orbSize: 0.5
+    spinDir: 1
+    spinSpeed: 0
+    orbitDir: 0
+    orbitSpeed: 0
+    orbTrn: {fileID: 0}
+    orbAxis: {fileID: 0}
+  - orbType: 5
+    orbPosX: 107
+    orbRotZ: -3.13
+    orbSize: 11.2
+    spinDir: 1
+    spinSpeed: 0
+    orbitDir: 0
+    orbitSpeed: 0
+    orbTrn: {fileID: 0}
+    orbAxis: {fileID: 0}
+  - orbType: 6
+    orbPosX: 150
+    orbRotZ: -26.73
+    orbSize: 9.3
+    spinDir: 1
+    spinSpeed: 0
+    orbitDir: 0
+    orbitSpeed: 0
+    orbTrn: {fileID: 0}
+    orbAxis: {fileID: 0}
+  - orbType: 7
+    orbPosX: 247
+    orbRotZ: -97
+    orbSize: 4
+    spinDir: 1
+    spinSpeed: 0
+    orbitDir: 0
+    orbitSpeed: 0
+    orbTrn: {fileID: 0}
+    orbAxis: {fileID: 0}
+  - orbType: 8
+    orbPosX: 356
+    orbRotZ: -29.32
+    orbSize: 3.9
+    spinDir: 1
+    spinSpeed: 0
+    orbitDir: 0
+    orbitSpeed: 0
+    orbTrn: {fileID: 0}
+    orbAxis: {fileID: 0}
+--- !u!1 &2446285087293332869
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 679029610621690682}
+  m_Layer: 0
+  m_Name: Planets
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &679029610621690682
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2446285087293332869}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5345290530548407439}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3476405331982000546
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3817036330546696229}
+  - component: {fileID: 3476405331982000573}
+  m_Layer: 0
+  m_Name: SunTrn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3817036330546696229
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3476405331982000546}
+  m_LocalRotation: {x: 0, y: 0, z: 0.06322599, w: 0.99799925}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 5345290530548407439}
+  m_Father: {fileID: 8758002429247634931}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 7.25}
+--- !u!114 &3476405331982000573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3476405331982000546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 368c254923b4698498afd1757c37b2c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  orbPos: {x: 0, y: 0, z: 0}
+  orbRot: {x: 0, y: 0, z: 0}
+  orbSize: 0
+  orbPrefab: {fileID: 0}
+  orbAxis: {fileID: 0}
+  spinSpeed: 10
+  spinDir: 0
+--- !u!1 &7048814105467100801
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5345290530548407439}
+  m_Layer: 0
+  m_Name: SunAxis
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5345290530548407439
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7048814105467100801}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 679029610621690682}
+  m_Father: {fileID: 3817036330546696229}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
