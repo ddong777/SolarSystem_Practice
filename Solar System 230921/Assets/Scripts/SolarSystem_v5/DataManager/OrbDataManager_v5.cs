@@ -32,7 +32,7 @@ public class OrbDataManager_v5 : _DataManager_v5
     public void SetData(int _id, OrbData data)
     {
         orbDatas[_id] = data;
-        Notify(serialize.FromOrbDataToString(data));
+        Notify();
     }
 
     public override void Notify()
@@ -41,15 +41,6 @@ public class OrbDataManager_v5 : _DataManager_v5
         foreach (_Manager_v5 ob in observers)
         {
             ob.OnNotify();
-        }
-    }
-
-    public void Notify(string _data)
-    {
-        Debug.Log("Orb Data Manager Update");
-        foreach (_Manager_v5 ob in observers)
-        {
-            ob.OnNotify(_data);
         }
     }
 }

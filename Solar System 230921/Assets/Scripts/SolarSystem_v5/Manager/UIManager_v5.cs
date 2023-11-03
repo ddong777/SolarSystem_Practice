@@ -10,61 +10,33 @@ public class UIManager_v5 : _Manager_v5
     private OrbSelectorUI orbSelectUI;
     private BackgroundUI singleUI;
 
-    // 필요 데이터
-    // OrbData
-    // List<OrbData.orbType>
-    // Orb Pos/Rot
-    // OrbTrn
-    // isMaster
-
     public void Init()
     {
         dataEditUI = GetComponentInChildren<OrbDataEditorUI>();
         orbSelectUI = GetComponentInChildren<OrbSelectorUI>();
         singleUI = GetComponentInChildren<BackgroundUI>();
 
-        UIs.Add(dataEditUI);
-        UIs.Add(orbSelectUI);
-        UIs.Add(singleUI);
-
-        foreach (AbstractUI ui in UIs)
-        {
-            ui.Init();
-        }
+        dataEditUI.Init();
+        orbSelectUI.Init();
+        singleUI.Init();
     }
 
-    public void Set_OrbDataEditor()
+    public void SetAccess(bool isAccessible)
     {
-
+        dataEditUI.SetAccess(isAccessible);
+        singleUI.SetAccess(isAccessible);
     }
-    public void Set_OrbSelector()
+
+    public void Set_OrbDataEditor(Dictionary<string,float> orbData)
     {
-
+        dataEditUI.SetEditor(orbData);
     }
-    public void Set_SingleUIs()
+    public void Set_OrbSelector(string[] orbList)
     {
-
+        orbSelectUI.orbNameData = orbList;
     }
-
-    public void Update_OrbDataEditor()
-    {            
-                 
-    }
-    public void Update_OrbSelector()
-    {            
-                 
-    }
-    public void Update_SingleUIs()
+    public void Set_SingleUIs(Transform orbTrn)
     {
-
-    }
-
-
-    public override void OnNotify()
-    {
-        foreach(AbstractUI ui in UIs)
-        {
-            ui.OnUpdateData();
-        }
+        singleUI.nowOrbTrn = orbTrn;
     }
 }

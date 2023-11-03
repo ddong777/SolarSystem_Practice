@@ -4,18 +4,40 @@ using UnityEngine;
 
 public class UIDataManager_v5 : _DataManager_v5
 {
-    // 필요 데이터
-    // OrbData
-    // List<OrbData.orbType>
-    // Orb Pos/Rot
-    // OrbTrn
-    // isMaster
+    public int NowOrbID;
+
+    public Dictionary<string, float> nowOrbData = new Dictionary<string, float>()
+    {
+        { "orbType", 0f },
+        { "orbPosX", 0f },
+        { "orbRotZ", 0f },
+        { "orbSize", 0f },
+        { "spinDir", 0f },
+        { "spinSpeed", 0f },
+        { "orbitDir", 0f },
+        { "orbitSpeed", 0f }
+    };
+    public Dictionary<string, float> EditorUIData_NowOrbData
+    {
+        get => nowOrbData;
+        set 
+        {
+            if (value != nowOrbData)
+            {
+                nowOrbData = value;
+                Notify();
+            }
+        }
+    }
+
+    public string[] SelectorUIData_OrbNameList;
+    public Transform SingleUIData_NowOrbTrn;
 
     public override void Notify()
     {
-        foreach (IObserver ob in observers)
+        foreach (_Manager_v5 manager in observers)
         {
-            ob.OnNotify();
+            manager.OnNotify();
         }
     }
 }

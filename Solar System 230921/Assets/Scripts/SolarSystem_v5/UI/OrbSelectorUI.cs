@@ -5,11 +5,13 @@ using UnityEngine.UI;
 
 public class OrbSelectorUI : AbstractUI
 {
+    public string[] orbNameData;
+
     private GameObject starUIPrefab;
     private GameObject planetUIPrefab;
 
     public Transform solarSystemOrbsTrn;
-    public List<Button> orbBtnList = new List<Button>();
+    private List<Button> orbBtnList = new List<Button>();
     public Button addBtn;
 
     public override void Init()

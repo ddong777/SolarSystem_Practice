@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,7 +35,7 @@ public class OrbDataEditorUI : AbstractUI
 
         applyBtn.onClick.RemoveAllListeners();
 
-        applyBtn.onClick.AddListener(OnChangeData.Invoke);
+        applyBtn.onClick.AddListener(OnUpdateData.Invoke);
     }
 
     public void SetAccess(bool value)
@@ -55,34 +56,18 @@ public class OrbDataEditorUI : AbstractUI
     }
 
     // 천체데이터관리창 세팅
-    public void SetEditor(Dictionary<string, float> _data)
+    public void SetEditor(Dictionary<string, float> orbData)
     {
-        orbTypeDrd.value = (int)_data["orbType"];
+        orbTypeDrd.value = (int)orbData["orbType"];
 
-        posXInF.text = _data["orbPosX"].ToString();
-        rotZInF.text = _data["orbRotZ"].ToString();
-        sizeInF.text = _data["orbSize"].ToString();
+        posXInF.text = orbData["orbPosX"].ToString();
+        rotZInF.text = orbData["orbRotZ"].ToString();
+        sizeInF.text = orbData["orbSize"].ToString();
 
-        spinDirDrd.value = (int)_data["spinDir"];
-        spinSpeedInF.text = _data["spinSpeed"].ToString();
+        spinDirDrd.value = (int)orbData["spinDir"];
+        spinSpeedInF.text = orbData["spinSpeed"].ToString();
 
-        orbitDirDrd.value = (int)_data["orbitDir"];
-        OrbitSpeedInF.text = _data["orbitSpeed"].ToString();
-    }
-
-    public OrbData GetEditor()
-    {
-        OrbData data = new OrbData();
-        data.orbType = (OrbType)Enum.ToObject(typeof(OrbType), orbTypeDrd.value);
-        data.orbPrefab = Resources.Load<GameObject>($"Prefabs/OrbFeature/{orbTypeDrd.value}_{orbTypeDrd.value}Feature");
-        data.orbPosX = float.Parse(posXInF.text);
-        data.orbRotZ = float.Parse(rotZInF.text);
-        data.orbSize = float.Parse(sizeInF.text);
-        data.spinDir = (MoveDir)Enum.ToObject(typeof(MoveDir), spinDirDrd.value);
-        data.spinSpeed = float.Parse(spinSpeedInF.text);
-        data.orbitDir = (MoveDir)Enum.ToObject(typeof(MoveDir), orbitDirDrd.value);
-        data.orbitSpeed = float.Parse(OrbitSpeedInF.text);
-
-        return data;
+        orbitDirDrd.value = (int)orbData["orbitDir"];
+        OrbitSpeedInF.text = orbData["orbitSpeed"].ToString();
     }
 }

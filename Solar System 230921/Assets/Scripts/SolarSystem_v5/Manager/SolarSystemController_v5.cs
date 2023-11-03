@@ -7,6 +7,11 @@ public class SolarSystemController_v5 : _Manager_v5
     public Star_v5 star;
     public List<Orb_v5> orbs;
 
+    public void SetCapacity(int capacity)
+    {
+        orbs.Capacity = capacity;
+    }
+
     public void SetOrb(Orb_v5 _orb)
     {
         orbs.Add(_orb);
@@ -41,7 +46,7 @@ public class SolarSystemController_v5 : _Manager_v5
         }
     }
 
-    public void UpdateAllOrbTrn(Vector3[] _poss, Vector3[] _rots)
+    public void UpdateAllOrb_PosNRot(Vector3[] _poss, Vector3[] _rots)
     {
         for (int i = 0; i < orbs.Count; i++)
         {
@@ -50,22 +55,9 @@ public class SolarSystemController_v5 : _Manager_v5
         }
     }
 
-    public Dictionary<int, Vector3[]> GetOrbTrn(int _id)
+    public Orb_v5 GetOrb(int _id)
     {
-        Dictionary<int, Vector3[]> trns = new Dictionary<int, Vector3[]>();
-        Vector3[] poss = new Vector3[orbs.Count];
-        Vector3[] rots = new Vector3[orbs.Count];
-
-        for (int i = 0; i < orbs.Count; i++)
-        {
-            poss[i] = orbs[i].Position;
-            rots[i] = orbs[i].Rotation;
-        }
-
-        trns.Add(_id, poss);
-        trns.Add(_id, rots);
-
-        return trns;
+        return orbs[_id];
     }
 
     public void MoveAllOrbs()

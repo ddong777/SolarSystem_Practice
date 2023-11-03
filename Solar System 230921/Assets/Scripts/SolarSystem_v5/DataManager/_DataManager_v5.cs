@@ -5,8 +5,7 @@ using UnityEngine;
 public abstract class _DataManager_v5 : MonoBehaviour, ISubject
 {
     public List<IObserver> observers = new List<IObserver>();
-    protected Serialize serialize = new Serialize();
-
+    
     public void Attach(IObserver ob)
     {
         observers.Add(ob);

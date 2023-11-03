@@ -1,18 +1,13 @@
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class NetworkManager_v5 : MonoBehaviour
+public class NetworkManager_v5 : MonoBehaviourPunCallbacks
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private SyncManager_v5 syncManager;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public bool isMaster = PhotonNetwork.IsMasterClient;
 }
