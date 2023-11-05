@@ -554,6 +554,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIManager_V5
       objectReference: {fileID: 0}
+    - target: {fileID: 6551806720218383360, guid: 7a1ee4b48cf4f7f4d87d15f83d142ec8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6638233018727412253, guid: 7a1ee4b48cf4f7f4d87d15f83d142ec8, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -1009,7 +1013,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1721568195}
   - component: {fileID: 1721568194}
-  - component: {fileID: 1721568196}
   m_Layer: 0
   m_Name: DataManagers
   m_TagString: Untagged
@@ -1026,10 +1029,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1721568193}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19437b9d954314d4aad853e890ea76ef, type: 3}
+  m_Script: {fileID: 11500000, guid: ffda3e65bb4b3ed40941866754c30b9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  orbDatas: []
+  solarData: {fileID: 0}
+  uidata: {fileID: 0}
+  networkData: {fileID: 0}
 --- !u!4 &1721568195
 Transform:
   m_ObjectHideFlags: 0
@@ -1044,21 +1049,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1721568196
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1721568193}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21e088cd780088d4e88aec67993233ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NowOrbID: 0
-  SelectorUIData_OrbNameList: []
-  SingleUIData_NowOrbTrn: {fileID: 0}
 --- !u!1 &2008039791
 GameObject:
   m_ObjectHideFlags: 0
