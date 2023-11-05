@@ -2,10 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SolarSystemController_v5 : _Manager_v5
+public class SolarSystemController_v5 : MonoBehaviour, IReceiver
 {
+    private OrbFactory orbFactory;
+
     public Star_v5 star;
     public List<Orb_v5> orbs;
+
+    public void Set(List<OrbData> datas)
+    {
+        SetCapacity(datas.Count);
+        foreach (OrbData data in datas)
+        {
+            if (data.isCenterOrb)
+            {
+                orbFactory = new StarFactory();
+                orbFactory.Set(transform);
+
+                SetStar(orbFactory.Create(data) as Star_v5);
+            }
+            else
+            {
+                orbFactory = new PlanetFactory();
+                orbFactory.Set(star.childenTrn);
+
+                SetOrb(orbFactory.Create(data));
+            }
+        }
+    }
 
     public void SetCapacity(int capacity)
     {
@@ -68,8 +92,11 @@ public class SolarSystemController_v5 : _Manager_v5
         }
     }
 
-    public override void OnNotify()
+    //==============================================
+
+    public void ReceiveData(ISender _sender)
     {
-        
+        SolarSystemData_v5 dataSender = _sender as SolarSystemData_v5;
+        Set(dataSender.OrbDatas);
     }
 }

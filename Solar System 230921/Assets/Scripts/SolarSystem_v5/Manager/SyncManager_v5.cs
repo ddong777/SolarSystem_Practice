@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SyncManager_v5 : _Manager_v5
 {
-    public override void OnNotify()
+    public override void ReceiveData()
     {
         
     }
