@@ -1,41 +1,62 @@
+using ExitGames.Client.Photon.StructWrapping;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DataManager_v5 : MonoBehaviour, IReceiver
 {
+    public Converter converter;
+
     public SolarSystemData_v5 solarData;
     public UIData_v5 uidata;
-    public NetworkData_v5 networkData;
+    public NetworkData_v5 serverData;
 
     public void Init()
     {
-        gameObject.AddComponent<SolarSystemData_v5>();
-        gameObject.AddComponent<UIData_v5>();
-        gameObject.AddComponent<NetworkData_v5>();
+        serverData = gameObject.AddComponent<NetworkData_v5>();
+        solarData = gameObject.AddComponent<SolarSystemData_v5>();
+        uidata = gameObject.AddComponent<UIData_v5>();
+        converter = gameObject.AddComponent<Converter>();  
 
-        solarData = GetComponent<SolarSystemData_v5>();
-        uidata = GetComponent<UIData_v5>();
-        networkData = GetComponent<NetworkData_v5>();
-    }
-
-    public void Set()
-    {
-        solarData.Set();
-        // 이미 서버에 존재하는 데이터 있다면 가져와서 세팅 (임시)
-        //if (networkData.OrbDatas() == null)
-        //{
-        //    solarData.Set();
-        //} else
-        //{
-        //    solarData.Set(networkData.OrbDatas());
-        //}
+        serverData.Attach(this);
+        solarData.Attach(this);
+        uidata.Attach(this);
     }
 
     //==============================================
 
-    public void ReceiveData(ISender sender)
+    public void ReceiveData(ISender _sender)
     {
+        switch (_sender)
+        {
+            case NetworkData_v5 sender:
+                Debug.Log(solarData.GetType().Name + "가 " + sender.GetType().Name + "로부터 데이터 받음");
+                if (sender.IsMaster || sender.isTestMode)
+                {
+                    solarData.Set(null);
+                }
+                else
+                {
+                    // 서버 데이터로 SolarData 세팅
+                    solarData.Set(converter.FromJsonToOrbDatas(sender.GetCustomProperty_stringArray(PropertyKey.OrbData)));
+                }
 
+                Debug.Log(uidata.GetType().Name + "가 " + sender.GetType().Name + "로부터 데이터 받음");
+                uidata.IsAccessible = sender.IsMaster;
+
+                break;
+
+            case SolarSystemData_v5 sender:
+                Debug.Log(uidata.GetType().Name + "가 " + sender.GetType().Name + "로부터 데이터 받음");
+                uidata.SelectorUIData_OrbNameList = converter.OrbTypeString(solarData.OrbDatas);
+                uidata.EditorUIData_NowOrbData = converter.OrbDataToEditorData(solarData.OrbDatas[uidata.NowOrbID], uidata.EditorUIData_NowOrbData);
+
+                Debug.Log(serverData.GetType().Name + "가 " + sender.GetType().Name + "로부터 데이터 받음");
+                serverData.SetCustomProperty(PropertyKey.OrbData, converter.FromOrbDatasToJson(sender.OrbDatas));
+                break;
+
+            default:
+                break;
+        }        
     }
 }

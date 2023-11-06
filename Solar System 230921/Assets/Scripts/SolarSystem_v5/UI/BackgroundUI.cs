@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class BackgroundUI : AbstractUI
+public class BackgroundUI : DataSender
 {
     public Transform nowOrbTrn;
 
@@ -21,9 +22,8 @@ public class BackgroundUI : AbstractUI
     [Header("Cam Sync Toggle")]
     public Toggle camSyncTgl;
 
-    public override void Init()
+    public void Init()
     {
-        //exitBtn.onClick.AddListener(GameManager_v4.Inst.NetworkManager.LeaveRoom);
         //camSyncTgl.onValueChanged.AddListener((m_Toggle) => { ToggleCamSync(m_Toggle); });
     }
 
@@ -35,6 +35,12 @@ public class BackgroundUI : AbstractUI
     public void BackgroundChanged()
     {
 
+    }
+
+    public void SetExitBtn(UnityAction func)
+    {
+        exitBtn.onClick.RemoveAllListeners();
+        exitBtn.onClick.AddListener(func);
     }
 
     public void SetAccess(bool value)

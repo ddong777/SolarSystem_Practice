@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CamController_v5 : _Manager_v5
+public class CamController_v5 : MonoBehaviour, IReceiver
 {
     public Transform target;
 
@@ -33,8 +33,8 @@ public class CamController_v5 : _Manager_v5
         }
     }
 
-    public override void ReceiveData()
+    public void ReceiveData(ISender sender)
     {
-        
+
     }
 }

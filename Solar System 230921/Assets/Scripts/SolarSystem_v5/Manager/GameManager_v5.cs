@@ -2,21 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager_v5 : _Manager_v5
+public class GameManager_v5 : MonoBehaviour, IReceiver
 {
     protected Converter converter = new Converter();
 
     private static GameManager_v5 instance;
 
-    DataManager_v5 dataManager;
+    private DataManager_v5 dataManager;
 
-    private SolarSystemData_v5 orbDataManager;
     private SolarSystemController_v5 solarSystem;
-
-    private UIData_v5 uiDataManager;
     private UIManager_v5 uiManager;
 
-    private NetworkData_v5 networkDataManager;
+    private SyncManager_v5 serverSyncManager;
     private NetworkManager_v5 networkManager;
 
     /// <summary>
@@ -39,7 +36,11 @@ public class GameManager_v5 : _Manager_v5
     private void OnEnable()
     {
         Init();
-        Set();
+        Resister();
+    }
+    private void Start()
+    {
+        
     }
 
     private void Update()
@@ -55,58 +56,66 @@ public class GameManager_v5 : _Manager_v5
     private void Init()
     {
         dataManager = FindObjectOfType<DataManager_v5>();
+        dataManager.Init();
+
+        networkManager = FindObjectOfType<NetworkManager_v5>();
+
+        serverSyncManager = FindObjectOfType<SyncManager_v5>();
+        serverSyncManager.Init();
 
         solarSystem = FindObjectOfType<SolarSystemController_v5>();
-
-        uiDataManager = FindObjectOfType<UIData_v5>();
+        
         uiManager = FindObjectOfType<UIManager_v5>();
-
-        networkDataManager = FindObjectOfType<NetworkData_v5>();
-        networkManager = FindObjectOfType<NetworkManager_v5>() ;
-
-        dataManager.Init();
-    }
-    private void Set()
-    {
-        Resister();
-
-        dataManager.Set();
-
-        // SetUIDataManager();
-        // SetUIManager();
-    }
-
-    private void Resister()
-    {
-        dataManager.solarData.Attach(solarSystem);
+        uiManager.Init();
     }
     
-    /// <summary>
-    /// 가지고 있는 객체들 기능 분류
-    /// </summary>
-    private void SetUIDataManager()
+    private void Resister()
     {
-        // 이렇게 하면 안됨 옵저버 이용하기
-        //uiDataManager.SelectorUIData_OrbNameList = converter.OrbTypeString(orbDataManager.OrbDatas);
-        //uiDataManager.EditorUIData_NowOrbData = converter.OrbDataToEditorData(orbDataManager.OrbDatas[uiDataManager.NowOrbID], uiDataManager.EditorUIData_NowOrbData);
-        //uiDataManager.SingleUIData_NowOrbTrn = solarSystem.GetOrb(uiDataManager.NowOrbID).transform;
-    }
+        serverSyncManager.Attach(dataManager.serverData);
 
-    private void SetUIManager()
-    {
-        // 이렇게 하면 안됨 옵저버 이용하기
-        //uiManager.SetAccess(networkManager.isMaster);
+        dataManager.solarData.Attach(this);
+        dataManager.uidata.Attach(this);
 
-        //uiManager.Set_OrbSelector(uiDataManager.SelectorUIData_OrbNameList);
-        //uiManager.Set_OrbDataEditor(uiDataManager.EditorUIData_NowOrbData);
-        //uiManager.Set_SingleUIs(uiDataManager.SingleUIData_NowOrbTrn);
+        dataManager.serverData.Attach(serverSyncManager);
+
+        uiManager.dataEditUI.Attach(dataManager);
+        uiManager.orbSelectUI.Attach(dataManager);
+        uiManager.singleUI.Attach(dataManager);
     }
 
     /// <summary>
-    /// 옵저버
+    /// 옵저버 패턴
     /// </summary>
-    public override void ReceiveData()
+    public void ReceiveData(ISender _sender)
     {
-        
+        switch (_sender)
+        {
+            case SolarSystemData_v5 sender:
+                Debug.Log(solarSystem.GetType().Name + "가 " + sender.GetType().Name + "로부터 데이터 받음");
+                if (!solarSystem.isCreated)
+                {
+                    solarSystem.Create(sender.OrbDatas);
+                    foreach (Orb_v5 orb in solarSystem.orbs)
+                    {
+                        sender.SetData(orb.data.id, orb.data);
+                    }
+                }
+                else
+                {
+                    solarSystem.UpdateAllOrbData(sender.OrbDatas);
+                }
+
+                break;
+            case UIData_v5 sender:
+                Debug.Log(uiManager.GetType().Name + "가 " + sender.GetType().Name + "로부터 데이터 받음");
+                uiManager.SetAccess(sender.IsAccessible);
+
+                uiManager.Set_OrbSelector(sender.SelectorUIData_OrbNameList);
+                uiManager.Set_OrbDataEditor(sender.EditorUIData_NowOrbData);
+                uiManager.Set_SingleUIs(solarSystem.orbs[sender.NowOrbID].transform, networkManager.LeaveRoom);
+                break;
+            default:
+                break;
+        }
     }
 }

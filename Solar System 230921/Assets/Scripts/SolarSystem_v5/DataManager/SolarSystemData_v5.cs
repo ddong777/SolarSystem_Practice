@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SolarSystemData_v5 : MonoBehaviour, ISender
+public class SolarSystemData_v5 : DataSender
 {
     [SerializeField]
     private List<OrbData> orbDatas = new List<OrbData>();
@@ -19,50 +19,36 @@ public class SolarSystemData_v5 : MonoBehaviour, ISender
         }
     }
 
-    public void Set()
+    private void Set()
     {
         TextAsset textAsset = Resources.Load<TextAsset>("JSON/solarSystem_BasicData");
         OrbDataList dataList = JsonUtility.FromJson<OrbDataList>(textAsset.text);
 
-        foreach (OrbData data in dataList.solarSystem_BasicData)
-        {
-            orbDatas.Add(data);
-        }
-
-        SendData();
+        OrbDatas = dataList.solarSystem_BasicData;
     }
 
     public void Set(List<OrbData> _datas)
     {
-        if (_datas == null) return;
+        if (_datas == null)
+        {
+            Set();
+            return;
+        }
+        else if (_datas == OrbDatas)
+        {
+            return;
+        }
+
         OrbDatas = _datas;
     }
 
-    public void SetData(int _id, OrbData data)
+    public void SetData(int _id, OrbData _data)
     {
-        OrbDatas[_id] = data;
-    }
-
-    //==============================================
-
-    public List<IReceiver> receivers = new List<IReceiver>();
-
-    public void Attach(IReceiver ob)
-    {
-        Debug.Log("attach");
-        receivers.Add(ob);
-    }
-
-    public void Detach(IReceiver ob)
-    {
-        receivers.Remove(ob);
-    }
-
-    public void SendData()
-    {
-        foreach (IReceiver receiver in receivers)
+        if (_data == null)
         {
-            receiver.ReceiveData(this);
+            return;
         }
+
+        OrbDatas[_id] = _data;
     }
 }

@@ -2,16 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SolarSystemController_v5 : MonoBehaviour, IReceiver
+public class SolarSystemController_v5 : MonoBehaviour
 {
     private OrbFactory orbFactory;
+
+    public bool isCreated = false;
 
     public Star_v5 star;
     public List<Orb_v5> orbs;
 
-    public void Set(List<OrbData> datas)
+    public void Create(List<OrbData> datas)
     {
         SetCapacity(datas.Count);
+        isCreated = true;
         foreach (OrbData data in datas)
         {
             if (data.isCenterOrb)
@@ -90,13 +93,5 @@ public class SolarSystemController_v5 : MonoBehaviour, IReceiver
         {
             _orb.Move();
         }
-    }
-
-    //==============================================
-
-    public void ReceiveData(ISender _sender)
-    {
-        SolarSystemData_v5 dataSender = _sender as SolarSystemData_v5;
-        Set(dataSender.OrbDatas);
     }
 }

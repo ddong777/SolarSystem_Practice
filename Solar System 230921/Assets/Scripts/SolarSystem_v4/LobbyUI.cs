@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class LobbyUI : MonoBehaviour
 {
-    NetworkManager networkManager;
-
     public string startBtnName = "StartBtn";
     public string connectTxtName = "ConnectingTxt";
 
@@ -15,15 +13,13 @@ public class LobbyUI : MonoBehaviour
 
     private void Awake()
     {
-        networkManager = FindObjectOfType<NetworkManager>();
-
         if (StartBtn == null)
             StartBtn = GameObject.Find(startBtnName);
         if (progressText == null)
             progressText = GameObject.Find(connectTxtName);
 
         StartBtn.GetComponent<Button>().onClick.AddListener(Connect);
-        StartBtn.GetComponent<Button>().onClick.AddListener(networkManager.Connect);
+        // StartBtn.GetComponent<Button>().onClick.AddListener(networkManager.Connect);
 
         StartBtn.SetActive(true);
         progressText.SetActive(false);

@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class OrbDataEditorUI : AbstractUI
+public class OrbDataEditorUI : DataSender
 {
     public Dropdown orbTypeDrd;
 
@@ -21,7 +22,7 @@ public class OrbDataEditorUI : AbstractUI
 
     public Button applyBtn;
 
-    public override void Init()
+    public void Init()
     {
         orbTypeDrd.ClearOptions();
         List<Dropdown.OptionData> optionDatas = new List<Dropdown.OptionData>();
@@ -32,10 +33,6 @@ public class OrbDataEditorUI : AbstractUI
             optionDatas.Add(optionData);
         }
         orbTypeDrd.AddOptions(optionDatas);
-
-        applyBtn.onClick.RemoveAllListeners();
-
-        applyBtn.onClick.AddListener(OnUpdateData.Invoke);
     }
 
     public void SetAccess(bool value)
@@ -53,6 +50,9 @@ public class OrbDataEditorUI : AbstractUI
         OrbitSpeedInF.interactable = value;
 
         applyBtn.gameObject.SetActive(value);
+
+        applyBtn.onClick.RemoveAllListeners();
+        applyBtn.onClick.AddListener(SendData);
     }
 
     // 천체데이터관리창 세팅

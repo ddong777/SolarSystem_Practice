@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class OrbSelectorUI : AbstractUI
+public class OrbSelectorUI : DataSender
 {
     public string[] orbNameData;
 
@@ -14,7 +14,7 @@ public class OrbSelectorUI : AbstractUI
     private List<Button> orbBtnList = new List<Button>();
     public Button addBtn;
 
-    public override void Init()
+    public void Init()
     {
         starUIPrefab = Resources.Load<GameObject>("Prefabs/Templete/V4/Star_UI");
         planetUIPrefab = Resources.Load<GameObject>("Prefabs/Templete/V4/Planet_UI");
@@ -44,7 +44,7 @@ public class OrbSelectorUI : AbstractUI
 
             Button btn = orbNameUI.transform.GetComponent<Button>();
             btn.onClick.AddListener(() => { GetSelector(btn); });
-            btn.onClick.AddListener(OnChangeData.Invoke);
+            //btn.onClick.AddListener(OnChangeData.Invoke);
             orbBtnList.Add(btn);
         }
     }

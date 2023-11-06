@@ -2,13 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class UIManager_v5 : _Manager_v5
+public class UIManager_v5 : MonoBehaviour
 {
-    public List<AbstractUI> UIs = new List<AbstractUI>();
-    private OrbDataEditorUI dataEditUI;
-    private OrbSelectorUI orbSelectUI;
-    private BackgroundUI singleUI;
+    public OrbDataEditorUI dataEditUI;
+    public OrbSelectorUI orbSelectUI;
+    public BackgroundUI singleUI;
 
     public void Init()
     {
@@ -35,8 +35,9 @@ public class UIManager_v5 : _Manager_v5
     {
         orbSelectUI.orbNameData = orbList;
     }
-    public void Set_SingleUIs(Transform orbTrn)
+    public void Set_SingleUIs(Transform orbTrn, UnityAction func)
     {
         singleUI.nowOrbTrn = orbTrn;
+        singleUI.SetExitBtn(func);
     }
 }

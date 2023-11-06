@@ -21,6 +21,7 @@ public class Converter : MonoBehaviour
 
     public Dictionary<string, float> OrbDataToEditorData(OrbData data, Dictionary<string, float> editorData)
     {
+        editorData["id"] = data.id;
         editorData["orbType"] = (float)data.orbType;
         editorData["orbPosX"] = data.orbPosX;
         editorData["orbRotZ"] = data.orbRotZ;
@@ -52,7 +53,7 @@ public class Converter : MonoBehaviour
         string[] strings = new string[datas.Count];
         for (int i = 0; i < datas.Count; i++)
         {
-            strings[i] = datas[i].ToString();
+            strings[i] = datas[i].orbType.ToString();
         }
         return strings;
     }
