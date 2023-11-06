@@ -36,22 +36,23 @@ public class UIData_v5 : DataSender
         get => nowOrbID;
         set
         {
-            if (nowOrbID == value)
+            if (nowOrbID != value)
             {
                 nowOrbID = value;
+                SendData();
             }
         }
-    } 
-    
-    private string[] orbNameList;
-    public string[] SelectorUIData_OrbNameList
+    }
+
+    private Dictionary<int, Dictionary<string, float>> allOrbData = new Dictionary<int, Dictionary<string, float>>();
+    public Dictionary<int, Dictionary<string, float>> SelectorUiData_allOrbData
     {
-        get=> orbNameList;
+        get => allOrbData;
         set
         {
-            if (orbNameList == value)
+            if (value != allOrbData)
             {
-                orbNameList = value;
+                allOrbData = value;
                 SendData();
             }
         }
@@ -63,7 +64,7 @@ public class UIData_v5 : DataSender
         get => isAcessible;
         set
         {
-            if (isAcessible == value)
+            if (isAcessible != value)
             {
                 isAcessible = value;
                 SendData();
@@ -74,5 +75,6 @@ public class UIData_v5 : DataSender
     private void OnEnable()
     {
         SendData();
+
     }
 }

@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class OrbSelectorUI : DataSender
 {
-    public string[] orbNameData;
-
     private GameObject starUIPrefab;
     private GameObject planetUIPrefab;
 
@@ -20,17 +18,17 @@ public class OrbSelectorUI : DataSender
         planetUIPrefab = Resources.Load<GameObject>("Prefabs/Templete/V4/Planet_UI");
     }
 
-    public void SetSelector(Dictionary<string, float> _data)
+    public void SetSelector(Dictionary<int, Dictionary<string, float>> datas)
     {
         for (int i = 0; i < solarSystemOrbsTrn.childCount; i++)
         {
             Destroy(solarSystemOrbsTrn.GetChild(i).gameObject);
         }
 
-        for (int i = 0; i < _data.Count; i++)
+        for (int i = 0; i < datas.Count; i++)
         {
             GameObject orbNameUI;
-            if (_data["isCenterOrb"] > 0.5)
+            if (datas[i]["isCenter"] > .5)
             {
                 orbNameUI = Instantiate(starUIPrefab, solarSystemOrbsTrn);
             }
@@ -39,8 +37,8 @@ public class OrbSelectorUI : DataSender
                 orbNameUI = Instantiate(planetUIPrefab, solarSystemOrbsTrn);
             }
 
-            orbNameUI.transform.GetComponentsInChildren<Text>()[0].text = _data["orbType"].ToString();
-            orbNameUI.transform.GetComponentsInChildren<Text>()[1].text = _data["id"].ToString();
+            orbNameUI.transform.GetComponentsInChildren<Text>()[0].text = datas[i]["orbtype"].ToString();
+            orbNameUI.transform.GetComponentsInChildren<Text>()[1].text = datas[i]["id"].ToString();
 
             Button btn = orbNameUI.transform.GetComponent<Button>();
             btn.onClick.AddListener(() => { GetSelector(btn); });

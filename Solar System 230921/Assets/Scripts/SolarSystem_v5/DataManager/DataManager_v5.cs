@@ -43,16 +43,22 @@ public class DataManager_v5 : MonoBehaviour, IReceiver
 
                 Debug.Log(uidata.GetType().Name + "가 " + sender.GetType().Name + "로부터 데이터 받음");
                 uidata.IsAccessible = sender.IsMaster;
+                if (sender.isTestMode)
+                {
+                    uidata.IsAccessible = sender.isTestMode;
+                }
 
                 break;
 
             case SolarSystemData_v5 sender:
-                Debug.Log(uidata.GetType().Name + "가 " + sender.GetType().Name + "로부터 데이터 받음");
-                uidata.SelectorUIData_OrbNameList = converter.OrbTypeString(solarData.OrbDatas);
-                uidata.EditorUIData_NowOrbData = converter.OrbDataToEditorData(solarData.OrbDatas[uidata.NowOrbID], uidata.EditorUIData_NowOrbData);
 
                 Debug.Log(serverData.GetType().Name + "가 " + sender.GetType().Name + "로부터 데이터 받음");
                 serverData.SetCustomProperty(PropertyKey.OrbData, converter.FromOrbDatasToJson(sender.OrbDatas));
+
+                Debug.Log(uidata.GetType().Name + "가 " + sender.GetType().Name + "로부터 데이터 받음");
+                //uidata.SelectorUIData_OrbNameList = converter.OrbTypeString(solarData.OrbDatas);
+                uidata.EditorUIData_NowOrbData = converter.OrbDataToEditorData(solarData.OrbDatas[uidata.NowOrbID], uidata.EditorUIData_NowOrbData);
+                uidata.SendData();
                 break;
 
             default:

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
-using UnityEngine.Analytics;
 
 public class SyncManager_v5 : MonoBehaviourPunCallbacks, ISender, IReceiver
 {
@@ -33,11 +32,6 @@ public class SyncManager_v5 : MonoBehaviourPunCallbacks, ISender, IReceiver
     }
 
     private Timer timer = new Timer();
-
-    private void Start()
-    {
-        SendData();
-    }
 
     public void Init()
     {

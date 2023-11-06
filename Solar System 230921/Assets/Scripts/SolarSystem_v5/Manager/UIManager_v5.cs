@@ -31,9 +31,9 @@ public class UIManager_v5 : MonoBehaviour
     {
         dataEditUI.SetEditor(orbData);
     }
-    public void Set_OrbSelector(string[] orbList)
+    public void Set_OrbSelector(Dictionary<int, Dictionary<string, float>> datas)
     {
-        orbSelectUI.orbNameData = orbList;
+        orbSelectUI.SetSelector(datas);
     }
     public void Set_SingleUIs(Transform orbTrn, UnityAction func)
     {

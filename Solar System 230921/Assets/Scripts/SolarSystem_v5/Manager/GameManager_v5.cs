@@ -37,6 +37,8 @@ public class GameManager_v5 : MonoBehaviour, IReceiver
     {
         Init();
         Resister();
+        serverSyncManager.SendData();
+
     }
     private void Start()
     {
@@ -76,11 +78,11 @@ public class GameManager_v5 : MonoBehaviour, IReceiver
         dataManager.solarData.Attach(this);
         dataManager.uidata.Attach(this);
 
-        dataManager.serverData.Attach(serverSyncManager);
-
         uiManager.dataEditUI.Attach(dataManager);
         uiManager.orbSelectUI.Attach(dataManager);
         uiManager.singleUI.Attach(dataManager);
+
+        dataManager.serverData.Attach(serverSyncManager);
     }
 
     /// <summary>
@@ -104,18 +106,23 @@ public class GameManager_v5 : MonoBehaviour, IReceiver
                 {
                     solarSystem.UpdateAllOrbData(sender.OrbDatas);
                 }
-
+                
                 break;
             case UIData_v5 sender:
                 Debug.Log(uiManager.GetType().Name + "가 " + sender.GetType().Name + "로부터 데이터 받음");
                 uiManager.SetAccess(sender.IsAccessible);
 
-                uiManager.Set_OrbSelector(sender.SelectorUIData_OrbNameList);
+                uiManager.Set_OrbSelector(sender.SelectorUiData_allOrbData);
                 uiManager.Set_OrbDataEditor(sender.EditorUIData_NowOrbData);
-                uiManager.Set_SingleUIs(solarSystem.orbs[sender.NowOrbID].transform, networkManager.LeaveRoom);
+                //uiManager.Set_SingleUIs(solarSystem.orbs[sender.NowOrbID].transform, test);
                 break;
             default:
                 break;
         }
+    }
+
+    public void test()
+    {
+        Debug.Log("test");
     }
 }
