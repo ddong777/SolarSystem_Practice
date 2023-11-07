@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CamController_v5 : MonoBehaviour
 {
+    private Data_Cam data;
+
     public Transform target;
 
     public float distance = 40f;
@@ -19,8 +21,17 @@ public class CamController_v5 : MonoBehaviour
         }
     }
 
+    public void Init()
+    {
+        data = FindObjectOfType<Data_Cam>();
+    }
 
-    public void SetTarget(Transform trn, float _distance)
+    public void Set()
+    {
+        SetTarget(data.TargetTrn, data.TargetSize);
+    }
+
+    private void SetTarget(Transform trn, float _distance)
     {
         target = trn;
 

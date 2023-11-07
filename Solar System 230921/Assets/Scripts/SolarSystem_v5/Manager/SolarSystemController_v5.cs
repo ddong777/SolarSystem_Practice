@@ -5,16 +5,40 @@ using UnityEngine;
 public class SolarSystemController_v5 : MonoBehaviour
 {
     private OrbFactory orbFactory;
-
-    public bool isCreated = false;
+    private Data_SolarSystem data;
 
     public Star_v5 star;
     public List<Orb_v5> orbs;
 
+    private void Update()
+    {
+        MoveAllOrbs();
+    }
+
+    public void Init()
+    {
+        data = FindObjectOfType<Data_SolarSystem>();
+
+        data.Init();
+    }
+
+    public void Set()
+    {
+        Create(data.OrbDatas);
+
+        List<Transform> trns = new List<Transform>();
+        foreach (Orb_v5 orb in orbs)
+        {
+            trns.Add(orb.transform);
+        }
+        data.Set(trns);
+    }
+
+    //=======================================================================
+
     public void Create(List<OrbData> datas)
     {
         SetCapacity(datas.Count);
-        isCreated = true;
         foreach (OrbData data in datas)
         {
             if (data.isCenterOrb)

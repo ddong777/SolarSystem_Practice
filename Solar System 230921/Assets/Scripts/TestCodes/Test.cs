@@ -1,11 +1,6 @@
-using Photon.Pun;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
-public class Test : MonoBehaviourPunCallbacks
+public class Test : MonoBehaviour
 {
 
     private void Start()
@@ -14,7 +9,12 @@ public class Test : MonoBehaviourPunCallbacks
     }
     void test()
     {
-        OrbData data = new OrbData();
-        Converter converter = new Converter();
+        Data_Network data_Network = FindObjectOfType<Data_Network>();
+        Data_SolarSystem data_SolarSystem = FindObjectOfType<Data_SolarSystem>();
+        Data_UI data_UI = FindObjectOfType<Data_UI>();
+        Data_Cam data_Cam = FindObjectOfType<Data_Cam>();
+
+        data_Network.Init(true, null);
+        data_SolarSystem.Init();
     }
 }

@@ -5,11 +5,6 @@ using UnityEngine;
 
 public class Data_Cam : AData
 {
-    public Transform TargetTrn
-    {
-        get
-        {
-            return data.OrbTrns[data.NowOrbID];
-        }
-    }
+    public Transform TargetTrn => data.OrbTrns[data.NowOrbID];
+    public float TargetSize => data.OrbDatas[data.NowOrbID].orbSize;
 }

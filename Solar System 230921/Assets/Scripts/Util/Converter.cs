@@ -1,16 +1,25 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using UnityEngine;
 
 public class Converter : MonoBehaviour
 {
+    public List<Dictionary<string, float>> FromOrbDatasToUIDatas(List<OrbData> datas)
+    {
+        List<Dictionary<string, float>> dictionary = new List<Dictionary<string, float>>();
+        foreach(OrbData data in datas)
+        {
+            dictionary.Add(FromOrbDataToUIData(data));
+        }
+
+        return dictionary;
+    }
+
     public Dictionary<string, float> FromOrbDataToUIData(OrbData data)
     {
         Dictionary<string, float> dictionary = new Dictionary<string, float>(){
             { "id", data.id },
+            { "isCenter", Convert.ToInt32(data.isCenterOrb)},
             { "orbType", (float)data.orbType },
             { "orbPosX", data.orbPosX },
             { "orbRotZ", data.orbRotZ },

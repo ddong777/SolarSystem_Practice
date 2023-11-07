@@ -1,9 +1,9 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class OrbSelectorUI : MonoBehaviour
+public class OrbSelectorUI : MonoBehaviour, IReceiver
 {
     private GameObject starUIPrefab;
     private GameObject planetUIPrefab;
@@ -16,9 +16,11 @@ public class OrbSelectorUI : MonoBehaviour
     {
         starUIPrefab = Resources.Load<GameObject>("Prefabs/Templete/V4/Star_UI");
         planetUIPrefab = Resources.Load<GameObject>("Prefabs/Templete/V4/Planet_UI");
+
+        solarSystemOrbsTrn = GameObject.Find("SolarSystemOrbsTrn").transform;
     }
 
-    public void SetSelector(Dictionary<int, Dictionary<string, float>> datas)
+    public void Set(List<Dictionary<string, float>> datas)
     {
         for (int i = 0; i < solarSystemOrbsTrn.childCount; i++)
         {
@@ -37,12 +39,12 @@ public class OrbSelectorUI : MonoBehaviour
                 orbNameUI = Instantiate(planetUIPrefab, solarSystemOrbsTrn);
             }
 
-            orbNameUI.transform.GetComponentsInChildren<Text>()[0].text = datas[i]["orbtype"].ToString();
+            OrbType _type = (OrbType)datas[i]["orbType"];
+            orbNameUI.transform.GetComponentsInChildren<Text>()[0].text = _type.ToString();
             orbNameUI.transform.GetComponentsInChildren<Text>()[1].text = datas[i]["id"].ToString();
 
             Button btn = orbNameUI.transform.GetComponent<Button>();
             btn.onClick.AddListener(() => { GetSelector(btn); });
-            //btn.onClick.AddListener(OnChangeData.Invoke);
             orbBtnList.Add(btn);
         }
     }
@@ -50,5 +52,12 @@ public class OrbSelectorUI : MonoBehaviour
     public void GetSelector(Button btn)
     {
         int nowOrbID = int.Parse(btn.transform.GetComponentsInChildren<Text>()[1].text);
+    }
+
+    //=======================================================================
+
+    public void ReceiveData()
+    {
+        // (int id, OrbType type) 제네릭 적용해야함
     }
 }

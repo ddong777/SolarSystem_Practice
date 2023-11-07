@@ -5,21 +5,22 @@ using UnityEngine;
 
 public class DataContainer : MonoBehaviour
 {
-    private bool isMaster;
+    private bool isMaster = true;
     public bool IsMaster
     {
         get { return isMaster; }
         set { isMaster = value; }
     }
 
-    private bool isSyncMode;
+    private bool isSyncMode = true;
     public bool IsSyncMode
     {
         get { return isSyncMode; }
         set { isSyncMode = value; }
     }
 
-    private int nowOrbID;
+    [SerializeField]
+    private int nowOrbID = 0;
     public int NowOrbID
     {
         get { return nowOrbID; }

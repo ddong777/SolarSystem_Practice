@@ -39,9 +39,13 @@ public class Data_SolarSystem : AData
         }
     }
 
-    private void Init()
+    public override void Init()
     {
-        if (OrbDatas.Count <= 0)
+        if (data == null)
+        {
+            data = FindObjectOfType<DataContainer>();
+        }
+        if (orbDatas.Count <= 0)
         {
             TextAsset textAsset = Resources.Load<TextAsset>("JSON/solarSystem_BasicData");
             OrbDataList dataList = JsonUtility.FromJson<OrbDataList>(textAsset.text);
@@ -74,8 +78,8 @@ public class Data_SolarSystem : AData
         OrbDatas[_id] = _data;
     }
 
-    public void GetTrns(List<Transform> trns)
+    public void Set(List<Transform> trns)
     {
-        orbTrns = trns;
+        OrbTrns = trns;
     }
 }

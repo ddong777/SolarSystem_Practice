@@ -4,7 +4,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class Data_Network : AData
 {
-    private bool isMaster;
+    private bool isMaster = true;
     public bool IsMaster
     {
         get 
@@ -43,7 +43,7 @@ public class Data_Network : AData
     {
         get
         {
-            switch (GetCustomProperty_Int(PropertyKey.ID))
+            switch (customProperties[PropertyKey.ID.ToString()])
             {
                 case 1:
                     SetCustomProperty(PropertyKey.OrbData, converter.FromOrbDatasToJson(data.OrbDatas));
@@ -74,30 +74,22 @@ public class Data_Network : AData
 
         set
         {
-            if (customProperties != value)
+            if (customProperties != value && value != null)
             {
                 customProperties = value;
 
-                switch (GetCustomProperty_Int(PropertyKey.ID))
+                if (!isMaster)
                 {
-                    case 1:
-                        data.OrbDatas = converter.FromJsonToOrbDatas(GetCustomProperty_stringArr(PropertyKey.OrbData));
-                        break;
-                    case 2:
-                        data.NowOrbID = GetCustomProperty_Int(PropertyKey.OrbID);
-                        break;
-                    case 3:
-                        for (int i = 0; i < data.OrbTrns.Count; i++)
-                        {
-                            Transform trn = data.OrbTrns[i];
-                            Vector3 pos = GetCustomProperty_Vec3Array(PropertyKey.OrbPosList)[i];
-                            Vector3 rot = GetCustomProperty_Vec3Array(PropertyKey.OrbRotList)[i];
-                            trn.localPosition = pos;
-                            trn.localRotation = Quaternion.Euler(rot);
-                        }
-                        break;
-                    default:
-                        break;
+                    data.OrbDatas = converter.FromJsonToOrbDatas(GetCustomProperty_stringArr(PropertyKey.OrbData));
+                    data.NowOrbID = GetCustomProperty_Int(PropertyKey.OrbID);
+                    for (int i = 0; i < data.OrbTrns.Count; i++)
+                    {
+                        Transform trn = data.OrbTrns[i];
+                        Vector3 pos = GetCustomProperty_Vec3Array(PropertyKey.OrbPosList)[i];
+                        Vector3 rot = GetCustomProperty_Vec3Array(PropertyKey.OrbRotList)[i];
+                        trn.localPosition = pos;
+                        trn.localRotation = Quaternion.Euler(rot);
+                    }
                 }
             }
         }

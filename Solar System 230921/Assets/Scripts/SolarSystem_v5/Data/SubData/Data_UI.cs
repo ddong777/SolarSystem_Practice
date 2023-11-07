@@ -5,24 +5,23 @@ using UnityEngine;
 
 public class Data_UI : AData, ISender
 {
-    private Dictionary<string, float> nowOrbData = new Dictionary<string, float>()
+    private List<Dictionary<string, float>> orbDatas = new List<Dictionary<string, float>>();
+    public List<Dictionary<string, float>> OrbDatas
     {
-        { "id", 0f },
-        { "orbType", 0f },
-        { "orbPosX", 0f },
-        { "orbRotZ", 0f },
-        { "orbSize", 0f },
-        { "spinDir", 0f },
-        { "spinSpeed", 0f },
-        { "orbitDir", 0f },
-        { "orbitSpeed", 0f }
-    };
+        get
+        {
+            orbDatas = converter.FromOrbDatasToUIDatas(data.OrbDatas);
+            return orbDatas;
+        }
+    }
+
+    private Dictionary<string, float> nowOrbData = new Dictionary<string, float>();
 
     public Dictionary<string, float> NowOrbData
     {
         get
         {
-            nowOrbData = converter.FromOrbDataToUIData(data.OrbDatas[NowOrbID]);
+            nowOrbData = OrbDatas[NowOrbID];
             return nowOrbData;
         }
         set 
@@ -30,6 +29,7 @@ public class Data_UI : AData, ISender
             if (value != nowOrbData)
             {
                 nowOrbData = value;
+                orbDatas[NowOrbID] = nowOrbData;
                 data.OrbDatas[NowOrbID] = converter.FromUIDataToOrbData(nowOrbData);
             }
         }
@@ -78,8 +78,16 @@ public class Data_UI : AData, ISender
     public Transform NowOrbTrn
     {
         get 
-        { 
-            return data.OrbTrns[NowOrbID]; 
+        {
+            if (data.OrbTrns.Count > NowOrbID)
+            {
+                return data.OrbTrns[NowOrbID];
+            }
+            else
+            {
+                Debug.Log("Orb Trn List 비어있음.");
+                return null;
+            }
         }
     }
 

@@ -35,7 +35,13 @@ public class OrbDataEditorUI : MonoBehaviour
         orbTypeDrd.AddOptions(optionDatas);
     }
 
-    public void SetAccess(bool value)
+    public void Set(bool _access, Dictionary<string, float> _datas)
+    {
+        SetAccess(_access);
+        SetEditor(_datas);
+    }
+
+    private void SetAccess(bool value)
     {
         orbTypeDrd.interactable = value;
 
@@ -56,7 +62,7 @@ public class OrbDataEditorUI : MonoBehaviour
     }
 
     // 천체데이터관리창 세팅
-    public void SetEditor(Dictionary<string, float> orbData)
+    private void SetEditor(Dictionary<string, float> orbData)
     {
         orbTypeDrd.value = (int)orbData["orbType"];
 

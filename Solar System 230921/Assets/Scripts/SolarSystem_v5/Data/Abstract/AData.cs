@@ -12,4 +12,6 @@ public abstract class AData : MonoBehaviour
         data = FindObjectOfType<DataContainer>();
         converter = new Converter();
     }
+
+    public virtual void Init() { }
 }
