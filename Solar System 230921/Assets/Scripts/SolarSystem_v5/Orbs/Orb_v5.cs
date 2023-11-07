@@ -72,12 +72,6 @@ public abstract class Orb_v5 : MonoBehaviour, ISpinable, IOrbitable
         {
             spinAxis = transform.GetChild(0);
         }
-
-        // 따로 자전 속도를 정하지 않으면 랜덤값
-        if (data.spinSpeed == 0)
-        {
-            data.spinSpeed = Random.Range(10f, 100f);
-        }
     }
     public virtual void Spin()
     {
@@ -88,9 +82,13 @@ public abstract class Orb_v5 : MonoBehaviour, ISpinable, IOrbitable
         }
 
         if (data.spinDir == MoveDir.rightDir)
+        {
             spinAxis.Rotate(data.spinSpeed * Time.deltaTime * Vector3.up);
+        }
         else
+        {
             spinAxis.Rotate(-data.spinSpeed * Time.deltaTime * Vector3.up);
+        }
     }
 
     /// <summary>====================================================================

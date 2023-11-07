@@ -73,20 +73,6 @@ public class SolarSystemController_v5 : MonoBehaviour
         }
     }
 
-    public void UpdateAllOrb_PosNRot(Vector3[] _poss, Vector3[] _rots)
-    {
-        for (int i = 0; i < orbs.Count; i++)
-        {
-            orbs[i].Position = _poss[i];
-            orbs[i].Rotation = _rots[i];
-        }
-    }
-
-    public Orb_v5 GetOrb(int _id)
-    {
-        return orbs[_id];
-    }
-
     public void MoveAllOrbs()
     {
         foreach (Orb_v5 _orb in orbs)

@@ -1,61 +1,44 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 
 public class Converter : MonoBehaviour
 {
-    public OrbData OrbToOrbData(Orb_v5 orb)
+    public Dictionary<string, float> FromOrbDataToUIData(OrbData data)
     {
-        return orb.data;
-    }
-    public Dictionary<string, Vector3> OrbToPosNRot(Orb_v5 orb)
-    {
-        return new Dictionary<string, Vector3>() 
-        { 
-            {"position", orb.Position}, 
-            {"rotation",  orb.Rotation} 
+        Dictionary<string, float> dictionary = new Dictionary<string, float>(){
+            { "id", data.id },
+            { "orbType", (float)data.orbType },
+            { "orbPosX", data.orbPosX },
+            { "orbRotZ", data.orbRotZ },
+            { "orbSize", data.orbSize },
+            { "spinDir", (float)data.spinDir },
+            { "spinSpeed", data.spinSpeed },
+            { "orbitDir", (float)data.orbitDir },
+            { "orbitSpeed", data.orbitSpeed }
         };
+
+        return dictionary;
     }
 
-    public Dictionary<string, float> OrbDataToEditorData(OrbData data, Dictionary<string, float> editorData)
+    public OrbData FromUIDataToOrbData(Dictionary<string, float> data)
     {
-        editorData["id"] = data.id;
-        editorData["orbType"] = (float)data.orbType;
-        editorData["orbPosX"] = data.orbPosX;
-        editorData["orbRotZ"] = data.orbRotZ;
-        editorData["orbSize"] = data.orbSize;
-        editorData["spinDir"] = (float)data.spinDir;
-        editorData["spinSpeed"] = data.spinSpeed;
-        editorData["orbitDir"] = (float)data.orbitDir;
-        editorData["orbitSpeed"] = data.orbitSpeed;
-
-        return editorData;
-    }
-
-    public OrbData EditorDataToOrbData(Dictionary<string, float> editorData, OrbData data)
-    {
-        data.orbType = (OrbType)Enum.ToObject(typeof(OrbType), editorData["orbType"]); ;
-        data.orbPosX = editorData["orbPosX"];
-        data.orbRotZ = editorData["orbRotZ"];
-        data.orbSize = editorData["orbSize"];
-        data.spinDir = (MoveDir)Enum.ToObject(typeof(MoveDir), editorData["spinDir"]);
-        data.spinSpeed = editorData["spinSpeed"];
-        data.orbitDir = (MoveDir)Enum.ToObject(typeof(MoveDir), editorData["orbitDir"]);
-        data.orbitSpeed = editorData["orbitSpeed"];
-
-        return data;
-    }
-
-    public string[] OrbTypeString(List<OrbData> datas)
-    {
-        string[] strings = new string[datas.Count];
-        for (int i = 0; i < datas.Count; i++)
+        OrbData orbData = new OrbData()
         {
-            strings[i] = datas[i].orbType.ToString();
-        }
-        return strings;
+            id = (int)data["id"],
+            orbType = (OrbType)Enum.ToObject(typeof(OrbType), data["orbType"]),
+            orbPosX = data["orbPosX"],
+            orbRotZ = data["orbRotZ"],
+            orbSize = data["orbSize"],
+            spinDir = (MoveDir)Enum.ToObject(typeof(MoveDir), data["spinDir"]),
+            spinSpeed = data["spinSpeed"],
+            orbitDir = (MoveDir)Enum.ToObject(typeof(MoveDir), data["orbitDir"]),
+            orbitSpeed = data["orbitSpeed"]
+        };
+        return orbData;
     }
 
     public string[] FromOrbDatasToJson(List<OrbData> orbDatas)

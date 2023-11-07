@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CamController_v5 : MonoBehaviour, IReceiver
+public class CamController_v5 : MonoBehaviour
 {
     public Transform target;
 
@@ -31,10 +31,5 @@ public class CamController_v5 : MonoBehaviour, IReceiver
             transform.position = target.position + new Vector3(0, 300, 0);
             transform.LookAt(target.position);
         }
-    }
-
-    public void ReceiveData(ISender sender)
-    {
-
     }
 }

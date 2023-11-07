@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class OrbDataEditorUI : DataSender
+public class OrbDataEditorUI : MonoBehaviour
 {
     public Dropdown orbTypeDrd;
 
@@ -52,7 +52,7 @@ public class OrbDataEditorUI : DataSender
         applyBtn.gameObject.SetActive(value);
 
         applyBtn.onClick.RemoveAllListeners();
-        applyBtn.onClick.AddListener(SendData);
+        //applyBtn.onClick.AddListener(SendData);
     }
 
     // 천체데이터관리창 세팅

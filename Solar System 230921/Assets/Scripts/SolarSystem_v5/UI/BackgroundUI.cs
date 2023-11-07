@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class BackgroundUI : DataSender
+public class BackgroundUI : MonoBehaviour
 {
     public Transform nowOrbTrn;
 

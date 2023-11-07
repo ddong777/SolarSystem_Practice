@@ -26,11 +26,6 @@ public class Planet_v5 : Orb_v5
     public override void InitOrbit()
     {
         base.InitOrbit();
-        // 따로 공전 속도를 정하지 않으면 랜덤값
-        if (data.orbitSpeed == 0)
-        {
-            data.orbitSpeed = Random.Range(0.2f, 1f);
-        }
         distance = data.orbPosX;
     }
 

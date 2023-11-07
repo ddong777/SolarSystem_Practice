@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
-public class SyncManager_v5 : MonoBehaviourPunCallbacks, ISender, IReceiver
+public class SyncManager_v5 : MonoBehaviourPunCallbacks
 {
     public bool isTestMode = true;
     public bool StartInOfflineMode => PhotonNetwork.PhotonServerSettings.StartInOfflineMode;
@@ -44,46 +44,5 @@ public class SyncManager_v5 : MonoBehaviourPunCallbacks, ISender, IReceiver
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
     {
         CustomPropeties = propertiesThatChanged; 
-    }
-
-    //=========================================================================
-    //=========================================================================
-
-    public List<IReceiver> receivers = new List<IReceiver>();
-
-    public void Attach(IReceiver receiver)
-    {
-        Debug.Log("Attach: " + this.GetType().Name + "에 " + receiver.GetType().Name + " 등록");
-        receivers.Add(receiver);
-    }
-
-    public void Detach(IReceiver receiver)
-    {
-        Debug.Log(this.GetType().Name + "에서 " + receiver.GetType().Name + " 제거");
-        receivers.Remove(receiver);
-    }
-
-    public void SendData()
-    {
-        foreach (IReceiver receiver in receivers)
-        {
-            Debug.Log(this.GetType().Name + "에서 " + receiver.GetType().Name + "로 데이터 전송");
-            receiver.ReceiveData(this);
-        }
-    }
-
-    public void ReceiveData(ISender _sender)
-    {
-        switch (_sender)
-        {
-            case NetworkData_v5 sender:
-                if (IsMasterClient)
-                {
-                    CustomPropeties = sender.CustomPropeties;
-                }
-                break;
-            default:
-                break;
-        }
     }
 }

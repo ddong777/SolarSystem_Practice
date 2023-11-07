@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IReceiver 
 {
-    public void ReceiveData(ISender sender);
+    public void ReceiveData();
 }

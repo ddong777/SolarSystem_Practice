@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class OrbSelectorUI : DataSender
+public class OrbSelectorUI : MonoBehaviour
 {
     private GameObject starUIPrefab;
     private GameObject planetUIPrefab;
