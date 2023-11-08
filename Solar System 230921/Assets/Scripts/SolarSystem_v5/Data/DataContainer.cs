@@ -114,7 +114,11 @@ public class DataContainer : EssentialData
                 subDatas.Add(sub);
             }
         }
+    }
 
+    // 한번만 실행해야 함...
+    public void Set()
+    {
         eventManager = FindObjectOfType<EventManager_v5>();
 
         eventManager.SetEvent("isMaster", OnIsMasterChange);

@@ -33,20 +33,17 @@ public class Converter : MonoBehaviour
         return dictionary;
     }
 
-    public OrbData FromUIDataToOrbData(Dictionary<string, float> data)
+    public OrbData FromUIDataToOrbData(Dictionary<string, float> data, OrbData orbData)
     {
-        OrbData orbData = new OrbData()
-        {
-            id = (int)data["id"],
-            orbType = (OrbType)Enum.ToObject(typeof(OrbType), data["orbType"]),
-            orbPosX = data["orbPosX"],
-            orbRotZ = data["orbRotZ"],
-            orbSize = data["orbSize"],
-            spinDir = (MoveDir)Enum.ToObject(typeof(MoveDir), data["spinDir"]),
-            spinSpeed = data["spinSpeed"],
-            orbitDir = (MoveDir)Enum.ToObject(typeof(MoveDir), data["orbitDir"]),
-            orbitSpeed = data["orbitSpeed"]
-        };
+        orbData.orbType = (OrbType)Enum.ToObject(typeof(OrbType), (int)data["orbType"]);
+        orbData.orbPosX = data["orbPosX"];
+        orbData.orbRotZ = data["orbRotZ"];
+        orbData.orbSize = data["orbSize"];
+        orbData.spinDir = (MoveDir)Enum.ToObject(typeof(MoveDir), (int)data["spinDir"]);
+        orbData.spinSpeed = data["spinSpeed"];
+        orbData.orbitDir = (MoveDir)Enum.ToObject(typeof(MoveDir), (int)data["orbitDir"]);
+        orbData.orbitSpeed = data["orbitSpeed"];
+
         return orbData;
     }
 

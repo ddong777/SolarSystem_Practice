@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class OrbSelectorUI : MonoBehaviour, IReceiver
@@ -10,7 +11,10 @@ public class OrbSelectorUI : MonoBehaviour, IReceiver
 
     public Transform solarSystemOrbsTrn;
     private List<Button> orbBtnList = new List<Button>();
+    private UnityAction<int> OnOrbSelected;
     public Button addBtn;
+
+    private int nowID;
 
     public void Init()
     {
@@ -40,32 +44,44 @@ public class OrbSelectorUI : MonoBehaviour, IReceiver
             }
 
             Button btn = orbNameUI.transform.GetComponent<Button>();
-            btn.onClick.AddListener(() => { GetSelector(btn); });
-            orbBtnList.Add(btn);
-
+            
             OrbType _type = (OrbType)datas[i]["orbType"];
-            orbBtnList[i].transform.GetComponentsInChildren<Text>()[0].text = _type.ToString();
-            orbBtnList[i].transform.GetComponentsInChildren<Text>()[1].text = datas[i]["id"].ToString();
+            btn.transform.GetComponentsInChildren<Text>()[0].text = _type.ToString();
+            btn.transform.GetComponentsInChildren<Text>()[1].text = datas[i]["id"].ToString();
+            btn.onClick.AddListener(() => OnOrbSelected(GetNowOrbID(btn)));
+
+            orbBtnList.Add(btn);
         }
     }
 
-    private void GetSelector(Button btn)
+    public void SetEvent(UnityAction<int> func)
     {
-       // int nowOrbID = int.Parse(btn.transform.GetComponentsInChildren<Text>()[1].text);
+        SetSelectOrbBtn(func);
+    }
+
+    private void SetSelectOrbBtn(UnityAction<int> func)
+    {
+        OnOrbSelected = func;
+    }
+
+    private int GetNowOrbID(Button btn)
+    {
+        int nowOrbID = int.Parse(btn.transform.GetComponentsInChildren<Text>()[1].text);
+        nowID = nowOrbID;
+        return nowOrbID;
     }
 
     private void SetSelector(Dictionary<string, float> data)
     {
         OrbType _type = (OrbType)data["orbType"];
-        orbBtnList[(int)data["id"]].transform.GetComponentsInChildren<Text>()[0].text = _type.ToString();
+        orbBtnList[nowID].transform.GetComponentsInChildren<Text>()[0].text = _type.ToString();
     }
 
     //=======================================================================
 
-
     public void ReceiveData<T>(T _data)
     {
-        if (_data.GetType() == typeof(Dictionary<string, float>)) 
+        if (_data is Dictionary<string, float>) 
         {
             SetSelector(_data as Dictionary<string, float>);
         }

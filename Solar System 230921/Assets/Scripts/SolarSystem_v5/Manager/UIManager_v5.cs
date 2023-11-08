@@ -39,6 +39,10 @@ public class UIManager_v5 : MonoBehaviour
     {
         dataEditUI.Set(data.IsMaster, data.NowOrbData);
         orbSelectUI.Set(data.OrbDatas);
-        singleUI.Set(data.IsMaster, data.NowOrbTrn, (value) => { data.IsSyncMode = value; });
+        singleUI.Set(data.IsMaster, data.NowOrbTrn);
+
+        dataEditUI.SetEvent((value) => { data.NowOrbData = value; });
+        orbSelectUI.SetEvent((value) => { data.NowOrbID = value; });
+        singleUI.SetEvent((value) => { data.IsSyncMode = value; });
     }
 }

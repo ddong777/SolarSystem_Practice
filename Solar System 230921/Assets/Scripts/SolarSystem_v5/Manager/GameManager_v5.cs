@@ -8,6 +8,7 @@ public class GameManager_v5 : MonoBehaviour
 
     private SolarSystemController_v5 solarSystem;
     private UIManager_v5 uiManager;
+    private EventManager_v5 eventManager;
     private CamController_v5 cameraController;
 
     private SyncManager_v5 serverSyncManager;
@@ -44,10 +45,12 @@ public class GameManager_v5 : MonoBehaviour
 
         solarSystem = FindObjectOfType<SolarSystemController_v5>();
         uiManager = FindObjectOfType<UIManager_v5>();
+        eventManager = FindObjectOfType<EventManager_v5>();
         cameraController = FindObjectOfType<CamController_v5>();
 
         solarSystem.Init();
         uiManager.Init();
+        eventManager.Init();
         cameraController.Init();
     }
 
@@ -55,6 +58,9 @@ public class GameManager_v5 : MonoBehaviour
     {
         solarSystem.Set();
         uiManager.Set();
+        eventManager.Set();
         cameraController.Set();
+
+        // 이벤트에 매니저 함수들 등록
     }
 }

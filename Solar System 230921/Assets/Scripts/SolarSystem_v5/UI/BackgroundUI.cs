@@ -25,10 +25,14 @@ public class BackgroundUI : MonoBehaviour, IReceiver
         camTrn = FindObjectOfType<Camera>().transform;
     }
 
-    public void Set(bool _access, Transform _orbTrn, UnityAction<bool> _syncFunc1)
+    public void Set(bool _access, Transform _orbTrn)
     {
         SetAccess(_access);
         SetNowOrbTrn(_orbTrn);
+    }
+
+    public void SetEvent(UnityAction<bool> _syncFunc1)
+    {
         SetSyncToggle(_syncFunc1);
     }
 
@@ -59,11 +63,11 @@ public class BackgroundUI : MonoBehaviour, IReceiver
 
     public void ReceiveData<T>(T _data)
     {
-        if (_data.GetType() == typeof(bool))
+        if (_data is bool)
         {
             SetAccess((bool)(object)_data);
         } 
-        else if (_data.GetType() == typeof(Transform))
+        else if (_data is Transform)
         {
             SetNowOrbTrn(_data as Transform);
         }

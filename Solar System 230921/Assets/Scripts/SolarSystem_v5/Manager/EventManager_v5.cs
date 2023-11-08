@@ -6,6 +6,16 @@ public class EventManager_v5 : MonoBehaviour
 {
     public Dictionary<string, UnityAction> events = new Dictionary<string, UnityAction>();
 
+    public void Init()
+    {
+
+    }
+
+    public void Set()
+    {
+
+    }
+
     public void SetEvent(string _eventName, UnityAction _action)
     {
         if (events.ContainsKey(_eventName))

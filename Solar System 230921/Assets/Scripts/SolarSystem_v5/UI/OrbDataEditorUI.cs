@@ -42,6 +42,11 @@ public class OrbDataEditorUI : MonoBehaviour, IReceiver
         SetEditor(_datas);
     }
 
+    public void SetEvent(UnityAction<Dictionary<string, float>> _syncFunc1)
+    {
+        SetApplyBtn(_syncFunc1);
+    }
+
     private void SetAccess(bool value)
     {
         orbTypeDrd.interactable = value;
@@ -57,9 +62,12 @@ public class OrbDataEditorUI : MonoBehaviour, IReceiver
         OrbitSpeedInF.interactable = value;
 
         applyBtn.gameObject.SetActive(value);
+    }
 
+    private void SetApplyBtn(UnityAction<Dictionary<string, float>> func)
+    {
         applyBtn.onClick.RemoveAllListeners();
-        //applyBtn.onClick.AddListener(SendData);
+        applyBtn.onClick.AddListener(() => func(GetOrbData()));
     }
 
     // 천체데이터관리창 세팅
@@ -78,11 +86,26 @@ public class OrbDataEditorUI : MonoBehaviour, IReceiver
         OrbitSpeedInF.text = orbData["orbitSpeed"].ToString();
     }
 
+    private Dictionary<string, float> GetOrbData()
+    {
+        Dictionary<string, float> data = new Dictionary<string, float>();
+        data["orbType"] = orbTypeDrd.value;
+        data["orbPosX"] = float.Parse(posXInF.text);
+        data["orbRotZ"] = float.Parse(rotZInF.text);
+        data["orbSize"] = float.Parse(sizeInF.text);
+        data["spinDir"] = spinDirDrd.value;
+        data["spinSpeed"] = float.Parse(spinSpeedInF.text);
+        data["orbitDir"] = orbitDirDrd.value;
+        data["orbitSpeed"] = float.Parse(OrbitSpeedInF.text);
+
+        return data;
+    }
+
     //=======================================================================
 
     void IReceiver.ReceiveData<T>(T _data)
     {
-        if (_data.GetType() == typeof(Dictionary<string, float>))
+        if (_data is Dictionary<string, float>)
         {
             SetEditor(_data as Dictionary<string, float>);
         }

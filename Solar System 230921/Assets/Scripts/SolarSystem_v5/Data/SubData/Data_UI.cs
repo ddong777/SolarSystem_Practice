@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Data_UI : EssentialData, ISender
+public class Data_UI : EssentialData, ISender, IReceiver
 {
     private int nowOrbID = 0;
     public override int NowOrbID
@@ -84,7 +84,9 @@ public class Data_UI : EssentialData, ISender
             {
                 nowOrbData = value;
                 orbDatas[NowOrbID] = nowOrbData;
-                data.OrbDatas[NowOrbID] = data.converter.FromUIDataToOrbData(nowOrbData);
+                data.OrbDatas[NowOrbID] = data.converter.FromUIDataToOrbData(nowOrbData, data.OrbDatas[NowOrbID]);
+                SendData(NowOrbID);
+                SendData(nowOrbData);
             }
         }
     }
@@ -125,6 +127,18 @@ public class Data_UI : EssentialData, ISender
         {
             Debug.Log("send message : " + GetType().Name + " -> " + r.GetType().Name);
             r.ReceiveData(data);
+        }
+    }
+
+    public void ReceiveData<T>(T _data)
+    {
+        if (_data is int)
+        {
+            NowOrbID = (int)(object)_data;
+        }
+        if (_data is Dictionary<string, float>)
+        {
+            NowOrbData = _data as Dictionary<string, float>;
         }
     }
 }
