@@ -2,10 +2,10 @@ using System;
 using UnityEngine;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
-public class Data_Network : AData
+public class Data_Network : EssentialData
 {
     private bool isMaster = true;
-    public bool IsMaster
+    public override bool IsMaster
     {
         get 
         { 
@@ -22,7 +22,7 @@ public class Data_Network : AData
     }
 
     private bool isSyncMode = true;
-    public bool IsSyncMode
+    public override bool IsSyncMode
     {
         get
         {
@@ -31,6 +31,10 @@ public class Data_Network : AData
         }
     }
 
+    //===========================================================================
+
+    // 항상 모든 데이터 값 갱신은 불필요
+    // 값이 같다면 수행하지 갱신하지 않는걸로 Sync Manager에서 세팅해줘야
     private Hashtable customProperties = new Hashtable() { 
         { PropertyKey.ID.ToString(), 0 },
         { PropertyKey.OrbData.ToString(), null },
@@ -43,31 +47,18 @@ public class Data_Network : AData
     {
         get
         {
-            switch (customProperties[PropertyKey.ID.ToString()])
+            SetCustomProperty(PropertyKey.OrbData, data.converter.FromOrbDatasToJson(data.OrbDatas));
+            SetCustomProperty(PropertyKey.OrbID, data.NowOrbID);
+            Vector3[] _pos = new Vector3[data.OrbTrns.Count];
+            Vector3[] _rot = new Vector3[data.OrbTrns.Count];
+
+            for (int i = 0; i < data.OrbTrns.Count; i++)
             {
-                case 1:
-                    SetCustomProperty(PropertyKey.OrbData, converter.FromOrbDatasToJson(data.OrbDatas));
-                    break;
-                case 2:
-                    SetCustomProperty(PropertyKey.OrbID, data.NowOrbID);
-                    break;
-                case 3:
-                    
-                    Vector3[] _pos = new Vector3[data.OrbTrns.Count];
-                    Vector3[] _rot = new Vector3[data.OrbTrns.Count];
-
-                    for (int i = 0; i < data.OrbTrns.Count; i++)
-                    {
-                        _pos[i] = data.OrbTrns[i].transform.localPosition;
-                        _rot[i] = data.OrbTrns[i].transform.localRotation.eulerAngles;
-                    }
-                    SetCustomProperty(PropertyKey.OrbPosList, _pos);
-                    SetCustomProperty(PropertyKey.OrbRotList, _rot);
-
-                    break;
-                default:
-                    break;
+                _pos[i] = data.OrbTrns[i].transform.localPosition;
+                _rot[i] = data.OrbTrns[i].transform.localRotation.eulerAngles;
             }
+            SetCustomProperty(PropertyKey.OrbPosList, _pos);
+            SetCustomProperty(PropertyKey.OrbRotList, _rot);
 
             return customProperties;
         }
@@ -80,7 +71,7 @@ public class Data_Network : AData
 
                 if (!isMaster)
                 {
-                    data.OrbDatas = converter.FromJsonToOrbDatas(GetCustomProperty_stringArr(PropertyKey.OrbData));
+                    data.OrbDatas = data.converter.FromJsonToOrbDatas(GetCustomProperty_stringArr(PropertyKey.OrbData));
                     data.NowOrbID = GetCustomProperty_Int(PropertyKey.OrbID);
                     for (int i = 0; i < data.OrbTrns.Count; i++)
                     {
@@ -97,6 +88,7 @@ public class Data_Network : AData
 
     public void Init(bool _isMaster, Hashtable _properties)
     {
+        base.Init();
         IsMaster = _isMaster;
         CustomPropeties = _properties;
     }

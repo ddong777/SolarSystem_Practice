@@ -2,11 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class OrbDataEditorUI : MonoBehaviour
+public class OrbDataEditorUI : MonoBehaviour, IReceiver
 {
     public Dropdown orbTypeDrd;
 
@@ -75,5 +76,15 @@ public class OrbDataEditorUI : MonoBehaviour
 
         orbitDirDrd.value = (int)orbData["orbitDir"];
         OrbitSpeedInF.text = orbData["orbitSpeed"].ToString();
+    }
+
+    //=======================================================================
+
+    void IReceiver.ReceiveData<T>(T _data)
+    {
+        if (_data.GetType() == typeof(Dictionary<string, float>))
+        {
+            SetEditor(_data as Dictionary<string, float>);
+        }
     }
 }

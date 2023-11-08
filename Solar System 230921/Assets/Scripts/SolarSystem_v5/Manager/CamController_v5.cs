@@ -24,6 +24,7 @@ public class CamController_v5 : MonoBehaviour
     public void Init()
     {
         data = FindObjectOfType<Data_Cam>();
+        data.Init();
     }
 
     public void Set()

@@ -1,31 +1,70 @@
-using ExitGames.Client.Photon.StructWrapping;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class DataContainer : MonoBehaviour
+public class DataContainer : EssentialData
 {
+    public Converter converter;
+    public List<EssentialData> subDatas = new List<EssentialData>();
+
+    private EventManager_v5 eventManager;
+
     private bool isMaster = true;
-    public bool IsMaster
+    public override bool IsMaster
     {
         get { return isMaster; }
-        set { isMaster = value; }
+        set 
+        {
+            if (value != isMaster)
+            {
+                isMaster = value;
+                foreach (EssentialData sub in subDatas)
+                {
+                    sub.IsMaster = isMaster;
+                }
+                OnIsMasterChange?.Invoke();
+            }
+        }
     }
 
     private bool isSyncMode = true;
-    public bool IsSyncMode
+    public override bool IsSyncMode
     {
         get { return isSyncMode; }
-        set { isSyncMode = value; }
+        set 
+        {
+            if (value != isSyncMode)
+            {
+                isSyncMode = value;
+                foreach (EssentialData sub in subDatas)
+                {
+                    sub.IsSyncMode = isSyncMode;
+                }
+                OnSyncModeChange?.Invoke();
+            }
+        }
     }
 
     [SerializeField]
     private int nowOrbID = 0;
-    public int NowOrbID
+    public override int NowOrbID
     {
         get { return nowOrbID; }
-        set { nowOrbID = value; }
+        set 
+        {
+            if (value != nowOrbID)
+            {
+                nowOrbID = value;
+                foreach (EssentialData sub in subDatas)
+                {
+                    sub.NowOrbID = nowOrbID;
+                }
+                OnNowOrbIDChange?.Invoke();
+            }
+        }
     }
+
+    //===========================================================================
 
     private List<OrbData> orbDatas = new List<OrbData>();
     public List<OrbData> OrbDatas
@@ -39,9 +78,12 @@ public class DataContainer : MonoBehaviour
             if (orbDatas != value)
             {
                 orbDatas = value;
+                OnOrbDatasChange?.Invoke();
             }
         }
     }
+    public UnityAction OnOrbDatasChange;
+
 
     private List<Transform> orbTrns = new List<Transform>();
     public List<Transform> OrbTrns
@@ -55,7 +97,30 @@ public class DataContainer : MonoBehaviour
             if (orbTrns != value)
             {
                 orbTrns = value;
+                OnOrbTrnsChange?.Invoke();
             }
         }
+    }
+    public UnityAction OnOrbTrnsChange;
+
+    public override void Init()
+    {
+        converter = new Converter();
+
+        foreach (EssentialData sub in FindObjectsOfType(typeof(EssentialData)))
+        {
+            if (sub != this)
+            {
+                subDatas.Add(sub);
+            }
+        }
+
+        eventManager = FindObjectOfType<EventManager_v5>();
+
+        eventManager.SetEvent("isMaster", OnIsMasterChange);
+        eventManager.SetEvent("isSyncMode", OnSyncModeChange);
+        eventManager.SetEvent("nowOrbID", OnNowOrbIDChange);
+        eventManager.SetEvent("orbDatas", OnOrbDatasChange);
+        eventManager.SetEvent("orbTrns", OnOrbTrnsChange);
     }
 }

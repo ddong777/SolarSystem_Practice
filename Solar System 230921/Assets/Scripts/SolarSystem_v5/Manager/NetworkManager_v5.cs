@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class NetworkManager_v5 : MonoBehaviourPunCallbacks
 {
@@ -37,11 +38,15 @@ public class NetworkManager_v5 : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.AutomaticallySyncScene = true;
             SetPlayerName();
+            GameObject.Find("StartBtn").GetComponent<Button>().onClick.RemoveAllListeners();
+            GameObject.Find("StartBtn").GetComponent<Button>().onClick.AddListener(Connect);
         }
         else
         {
             syncManager = FindObjectOfType<SyncManager_v5>();
             syncManager.isTestMode = false;
+            GameObject.Find("ExitBtn").GetComponent<Button>().onClick.RemoveAllListeners();
+            GameObject.Find("ExitBtn").GetComponent<Button>().onClick.AddListener(LeaveRoom);
         }
     }
 

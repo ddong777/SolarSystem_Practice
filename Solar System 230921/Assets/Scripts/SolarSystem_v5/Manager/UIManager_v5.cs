@@ -20,6 +20,7 @@ public class UIManager_v5 : MonoBehaviour
     public void Init()
     {
         data = FindObjectOfType<Data_UI>();
+        data.Init();
 
         dataEditUI = GetComponentInChildren<OrbDataEditorUI>();
         orbSelectUI = GetComponentInChildren<OrbSelectorUI>();
@@ -28,6 +29,10 @@ public class UIManager_v5 : MonoBehaviour
         dataEditUI.Init();
         orbSelectUI.Init();
         singleUI.Init();
+
+        data.Attach(dataEditUI);
+        data.Attach(orbSelectUI);
+        data.Attach(singleUI);
     }
 
     public void Set()

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IReceiver 
+public interface IReceiver
 {
-    public void ReceiveData();
+    public void ReceiveData<T>(T t);
 }

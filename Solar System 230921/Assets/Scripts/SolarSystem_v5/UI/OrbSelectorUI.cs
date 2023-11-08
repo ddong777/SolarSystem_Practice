@@ -39,25 +39,35 @@ public class OrbSelectorUI : MonoBehaviour, IReceiver
                 orbNameUI = Instantiate(planetUIPrefab, solarSystemOrbsTrn);
             }
 
-            OrbType _type = (OrbType)datas[i]["orbType"];
-            orbNameUI.transform.GetComponentsInChildren<Text>()[0].text = _type.ToString();
-            orbNameUI.transform.GetComponentsInChildren<Text>()[1].text = datas[i]["id"].ToString();
-
             Button btn = orbNameUI.transform.GetComponent<Button>();
             btn.onClick.AddListener(() => { GetSelector(btn); });
             orbBtnList.Add(btn);
+
+            OrbType _type = (OrbType)datas[i]["orbType"];
+            orbBtnList[i].transform.GetComponentsInChildren<Text>()[0].text = _type.ToString();
+            orbBtnList[i].transform.GetComponentsInChildren<Text>()[1].text = datas[i]["id"].ToString();
         }
     }
 
-    public void GetSelector(Button btn)
+    private void GetSelector(Button btn)
     {
-        int nowOrbID = int.Parse(btn.transform.GetComponentsInChildren<Text>()[1].text);
+       // int nowOrbID = int.Parse(btn.transform.GetComponentsInChildren<Text>()[1].text);
+    }
+
+    private void SetSelector(Dictionary<string, float> data)
+    {
+        OrbType _type = (OrbType)data["orbType"];
+        orbBtnList[(int)data["id"]].transform.GetComponentsInChildren<Text>()[0].text = _type.ToString();
     }
 
     //=======================================================================
 
-    public void ReceiveData()
+
+    public void ReceiveData<T>(T _data)
     {
-        // (int id, OrbType type) 제네릭 적용해야함
+        if (_data.GetType() == typeof(Dictionary<string, float>)) 
+        {
+            SetSelector(_data as Dictionary<string, float>);
+        }
     }
 }

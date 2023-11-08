@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Data_SolarSystem : AData
+public class Data_SolarSystem : EssentialData
 {
     private List<OrbData> orbDatas = new List<OrbData>();
     public List<OrbData> OrbDatas
@@ -27,6 +27,7 @@ public class Data_SolarSystem : AData
     {
         get 
         { 
+            orbTrns = data.OrbTrns;
             return orbTrns; 
         }
         set 
@@ -41,10 +42,8 @@ public class Data_SolarSystem : AData
 
     public override void Init()
     {
-        if (data == null)
-        {
-            data = FindObjectOfType<DataContainer>();
-        }
+        base.Init();
+
         if (orbDatas.Count <= 0)
         {
             TextAsset textAsset = Resources.Load<TextAsset>("JSON/solarSystem_BasicData");

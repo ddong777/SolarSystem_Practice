@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class BackgroundUI : MonoBehaviour
+public class BackgroundUI : MonoBehaviour, IReceiver
 {
     private Transform camTrn;
     public Transform nowOrbTrn;
@@ -13,9 +13,6 @@ public class BackgroundUI : MonoBehaviour
     [Header("NowOrb Data Panel")]
     public Text orbPosTxt;
     public Text camPosTxt;
-
-    [Header("Exit")]
-    public Button exitBtn;
 
     [Header("Master Client")]
     public GameObject clientTxt;
@@ -31,7 +28,7 @@ public class BackgroundUI : MonoBehaviour
     public void Set(bool _access, Transform _orbTrn, UnityAction<bool> _syncFunc1)
     {
         SetAccess(_access);
-        nowOrbTrn = _orbTrn;
+        SetNowOrbTrn(_orbTrn);
         SetSyncToggle(_syncFunc1);
     }
 
@@ -41,22 +38,34 @@ public class BackgroundUI : MonoBehaviour
         camSyncTgl.gameObject.SetActive(value);
     }
 
+    private void SetNowOrbTrn(Transform _orbTrn)
+    {
+        nowOrbTrn = _orbTrn;
+    }
+
     private void SetSyncToggle(UnityAction<bool> func)
     {
         camSyncTgl.onValueChanged.RemoveAllListeners();
         camSyncTgl.onValueChanged.AddListener((m_Toggle) => { func(m_Toggle); });
     }
 
-    // bind로 관리하기
-    private void SetExitBtn(UnityAction func)
-    {
-        exitBtn.onClick.RemoveAllListeners();
-        exitBtn.onClick.AddListener(func);
-    }
-
     public void UpdateUI()
     {
         orbPosTxt.text = nowOrbTrn.localPosition.ToString();
         camPosTxt.text = camTrn.position.ToString();
+    }
+
+    //=======================================================================
+
+    public void ReceiveData<T>(T _data)
+    {
+        if (_data.GetType() == typeof(bool))
+        {
+            SetAccess((bool)(object)_data);
+        } 
+        else if (_data.GetType() == typeof(Transform))
+        {
+            SetNowOrbTrn(_data as Transform);
+        }
     }
 }
