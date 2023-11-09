@@ -35,6 +35,11 @@ public abstract class Orb_v5 : MonoBehaviour, ISpinable, IOrbitable
 
     public void SetFeature(GameObject _prefab)
     {
+        if (data.orbPrefab == _prefab)
+        {
+            return;
+        }
+
         if (featureTrn == null)
         {
             featureTrn = transform.GetChild(0).Find(featureTrnName);
@@ -61,6 +66,12 @@ public abstract class Orb_v5 : MonoBehaviour, ISpinable, IOrbitable
     {
         transform.localPosition = pos;
         transform.localRotation = Quaternion.Euler(rot);
+    }
+
+    public void UpdateTrnasform()
+    {
+        transform.localRotation = Quaternion.Euler(new Vector3(0, 0, data.orbRotZ));
+        featureTrn.localScale = new Vector3(data.orbSize, data.orbSize, data.orbSize);
     }
 
     /// <summary>====================================================================

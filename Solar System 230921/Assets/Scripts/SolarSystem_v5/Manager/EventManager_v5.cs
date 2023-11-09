@@ -73,6 +73,10 @@ public class EventManager_v5 : MonoBehaviour
         {
             return events[_eventName];
         }
-        else { return null; }
+        else 
+        {
+            Debug.Log(_eventName + "은 존재하지 않는 이벤트입니다.");
+            return null; 
+        }
     }
 }

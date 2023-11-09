@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Data_UI : EssentialData, ISender, IReceiver
@@ -67,6 +68,14 @@ public class Data_UI : EssentialData, ISender, IReceiver
             orbDatas = data.converter.FromOrbDatasToUIDatas(data.OrbDatas);
             return orbDatas;
         }
+        set 
+        {
+            if (orbDatas != value)
+            {
+                orbDatas = value;
+                data.OrbDatas = data.converter.FromUIDatasToOrbDatas(orbDatas, data.OrbDatas);
+            }
+        }
     }
 
     private Dictionary<string, float> nowOrbData = new Dictionary<string, float>();
@@ -80,11 +89,14 @@ public class Data_UI : EssentialData, ISender, IReceiver
         }
         set 
         {
-            if (value != nowOrbData)
+            // 데이터가 같은데 업데이트 하고 있음
+            // 딕셔너리 비교용 함수 필요
+            if (nowOrbData.Values != value.Values)
             {
                 nowOrbData = value;
                 orbDatas[NowOrbID] = nowOrbData;
-                data.OrbDatas[NowOrbID] = data.converter.FromUIDataToOrbData(nowOrbData, data.OrbDatas[NowOrbID]);
+                data.OrbDatas = data.converter.FromUIDatasToOrbDatas(orbDatas, data.OrbDatas);
+
                 SendData(NowOrbID);
                 SendData(nowOrbData);
             }
@@ -125,7 +137,7 @@ public class Data_UI : EssentialData, ISender, IReceiver
     {
         foreach (IReceiver r in receivers)
         {
-            Debug.Log("send message : " + GetType().Name + " -> " + r.GetType().Name);
+            //Debug.Log("send message : " + GetType().Name + " -> " + r.GetType().Name);
             r.ReceiveData(data);
         }
     }

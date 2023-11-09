@@ -1,7 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static SolarSystemController;
 
 public class Planet_v5 : Orb_v5
 {

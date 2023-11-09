@@ -42,5 +42,10 @@ public abstract class OrbFactory : MonoBehaviour
         }
     }
 
+    public GameObject GetPrefab(OrbType type)
+    {
+        return orbPrefabs[type];
+    }
+
     public abstract Orb_v5 Create(OrbData _data);
 }

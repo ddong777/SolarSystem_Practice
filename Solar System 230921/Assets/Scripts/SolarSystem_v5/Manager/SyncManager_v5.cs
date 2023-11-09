@@ -6,6 +6,8 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class SyncManager_v5 : MonoBehaviourPunCallbacks
 {
+    private Data_Network data;
+
     public bool isTestMode = true;
     public bool StartInOfflineMode => PhotonNetwork.PhotonServerSettings.StartInOfflineMode;
     public bool IsMasterClient => PhotonNetwork.IsMasterClient;
@@ -35,6 +37,9 @@ public class SyncManager_v5 : MonoBehaviourPunCallbacks
 
     public void Init()
     {
+        data = FindObjectOfType<Data_Network>();
+        data.Init();
+
         timer.InitTimer(10);
         timer.OnTimeDone += () => { 
             // 위치 동기화

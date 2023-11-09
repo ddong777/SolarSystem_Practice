@@ -62,5 +62,13 @@ public class GameManager_v5 : MonoBehaviour
         cameraController.Set();
 
         // 이벤트에 매니저 함수들 등록
+        eventManager.SetEvent("isMaster", () => { Debug.Log("isMaster Changed"); });
+        eventManager.SetEvent("isSyncMode", () => { Debug.Log("isSyncMode Changed"); });
+        eventManager.SetEvent("nowOrbID", () => { Debug.Log("nowOrbID Changed"); });
+        eventManager.SetEvent("orbDatas", () => { Debug.Log("orbDatas Changed"); });
+        eventManager.SetEvent("orbTrns", () => { Debug.Log("orbTrns Changed"); });
+
+        eventManager.AddEvent("nowOrbID", cameraController.Set);
+        eventManager.SetEvent("orbDatas", solarSystem.UpdateAllOrb);
     }
 }

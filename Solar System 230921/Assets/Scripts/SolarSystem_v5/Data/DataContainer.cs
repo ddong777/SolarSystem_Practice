@@ -22,7 +22,7 @@ public class DataContainer : EssentialData
                 {
                     sub.IsMaster = isMaster;
                 }
-                OnIsMasterChange?.Invoke();
+                eventManager.GetEvent("isMaster")?.Invoke();
             }
         }
     }
@@ -40,7 +40,7 @@ public class DataContainer : EssentialData
                 {
                     sub.IsSyncMode = isSyncMode;
                 }
-                OnSyncModeChange?.Invoke();
+                eventManager.GetEvent("isSyncMode")?.Invoke();
             }
         }
     }
@@ -59,7 +59,7 @@ public class DataContainer : EssentialData
                 {
                     sub.NowOrbID = nowOrbID;
                 }
-                OnNowOrbIDChange?.Invoke();
+                eventManager.GetEvent("nowOrbID")?.Invoke();
             }
         }
     }
@@ -74,12 +74,9 @@ public class DataContainer : EssentialData
             return orbDatas; 
         }
         set 
-        { 
-            if (orbDatas != value)
-            {
-                orbDatas = value;
-                OnOrbDatasChange?.Invoke();
-            }
+        {
+            orbDatas = value;
+            eventManager.GetEvent("orbDatas")?.Invoke();
         }
     }
     public UnityAction OnOrbDatasChange;
@@ -97,15 +94,21 @@ public class DataContainer : EssentialData
             if (orbTrns != value)
             {
                 orbTrns = value;
-                OnOrbTrnsChange?.Invoke();
+                eventManager.GetEvent("orbTrns")?.Invoke();
             }
         }
     }
     public UnityAction OnOrbTrnsChange;
 
+    private void Awake()
+    {
+        Init();
+    }
+
     public override void Init()
     {
         converter = new Converter();
+        eventManager = FindObjectOfType<EventManager_v5>();
 
         foreach (EssentialData sub in FindObjectsOfType(typeof(EssentialData)))
         {
@@ -114,17 +117,5 @@ public class DataContainer : EssentialData
                 subDatas.Add(sub);
             }
         }
-    }
-
-    // 한번만 실행해야 함...
-    public void Set()
-    {
-        eventManager = FindObjectOfType<EventManager_v5>();
-
-        eventManager.SetEvent("isMaster", OnIsMasterChange);
-        eventManager.SetEvent("isSyncMode", OnSyncModeChange);
-        eventManager.SetEvent("nowOrbID", OnNowOrbIDChange);
-        eventManager.SetEvent("orbDatas", OnOrbDatasChange);
-        eventManager.SetEvent("orbTrns", OnOrbTrnsChange);
     }
 }

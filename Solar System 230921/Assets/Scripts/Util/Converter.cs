@@ -15,6 +15,17 @@ public class Converter : MonoBehaviour
         return dictionary;
     }
 
+    public List<OrbData> FromUIDatasToOrbDatas(List<Dictionary<string, float>> uiDatas, List<OrbData> orbDatas)
+    {
+        for (int i = 0; i < orbDatas.Count; i++)
+        {
+            Dictionary<string, float> uiData = uiDatas[i];
+            orbDatas[i] = FromUIDataToOrbData(uiData, orbDatas[i]);
+        }
+
+        return orbDatas;
+    }
+
     public Dictionary<string, float> FromOrbDataToUIData(OrbData data)
     {
         Dictionary<string, float> dictionary = new Dictionary<string, float>(){

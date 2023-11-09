@@ -19,6 +19,5 @@ public abstract class EssentialData : MonoBehaviour
     public virtual void Init()
     {
         data = FindObjectOfType<DataContainer>();
-        data.Init();
     }
 }

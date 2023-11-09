@@ -18,7 +18,6 @@ public class SolarSystemController_v5 : MonoBehaviour
     public void Init()
     {
         data = FindObjectOfType<Data_SolarSystem>();
-
         data.Init();
     }
 
@@ -89,11 +88,14 @@ public class SolarSystemController_v5 : MonoBehaviour
         orbs[_id].Rotation = _rot;
     }
 
-    public void UpdateAllOrbData(List<OrbData> _datas)
+    public void UpdateAllOrb()
     {
         for (int i = 0; i < orbs.Count; i++)
         {
-            orbs[i].data = _datas[i]; // 메모리 해제 방법 찾아서 적용하기
+            orbs[i].SetData(data.OrbDatas[i]);
+            orbs[i].SetFeature(orbFactory.GetPrefab(orbs[i].data.orbType));
+            orbs[i].UpdateTrnasform();
+            orbs[i].InitMove();
         }
     }
 
