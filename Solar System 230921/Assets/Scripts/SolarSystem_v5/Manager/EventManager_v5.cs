@@ -6,21 +6,33 @@ public class EventManager_v5 : MonoBehaviour
 {
     public Dictionary<string, UnityAction> events = new Dictionary<string, UnityAction>();
 
-    public void Init()
+    private void Awake()
     {
-
+        EventManager_v5[] objs = FindObjectsOfType(typeof(EventManager_v5)) as EventManager_v5[];
+        if (objs.Length > 1)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            DontDestroyOnLoad(this.gameObject);
+        }
     }
 
-    public void Set()
+    public void CurrentEventList()
     {
-
+        foreach (KeyValuePair<string, UnityAction> ev in events)
+        {
+            Debug.Log($"{ev.Key} - {ev.Value}");
+        }
     }
 
     public void SetEvent(string _eventName, UnityAction _action)
     {
         if (events.ContainsKey(_eventName))
         {
-            events[_eventName] = _action;
+            events.Remove(_eventName);
+            events.Add(_eventName, _action);
         }
         else
         {
@@ -30,9 +42,11 @@ public class EventManager_v5 : MonoBehaviour
 
     public void AddEvent(string _eventName, UnityAction _event)
     {
+        Debug.Log("add event : " + _eventName);
         // 있는 이벤트인지 확인
         if (events.ContainsKey(_eventName))
         {
+            events[_eventName] -= _event;
             events[_eventName] += _event;
         }
         else 
@@ -40,7 +54,7 @@ public class EventManager_v5 : MonoBehaviour
             UnityAction _temp = () => { };
             _temp += _event;
 
-            events.Add(_eventName, _temp);
+            SetEvent(_eventName, _temp);
         }
     }
 

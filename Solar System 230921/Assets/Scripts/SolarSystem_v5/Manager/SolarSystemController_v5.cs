@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SolarSystemController_v5 : MonoBehaviour
 {
+    private static SolarSystemController_v5 instance;
+
     private OrbFactory orbFactory;
     private Data_SolarSystem data;
 
@@ -17,6 +19,15 @@ public class SolarSystemController_v5 : MonoBehaviour
 
     public void Init()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+
         data = FindObjectOfType<Data_SolarSystem>();
         data.Init();
     }

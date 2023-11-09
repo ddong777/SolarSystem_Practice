@@ -1,15 +1,13 @@
-using UnityEngine;
-using UnityEngine.SceneManagement;
-
 using Photon.Pun;
 using Photon.Realtime;
 
-public class NetworkManager_v5 : MonoBehaviourPunCallbacks
-{
-    private SyncManager_v5 syncManager;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
-    private string gameVersion = "2";
-    private string playerNamePrefKey = "player__";
+public class NetworkTest : MonoBehaviourPunCallbacks
+{
+    private string gameVersion = "3";
+    private string playerNamePrefKey = "player";
     private bool isConnecting;
 
     [SerializeField]
@@ -19,7 +17,7 @@ public class NetworkManager_v5 : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        NetworkManager_v5[] objs = FindObjectsOfType(typeof(NetworkManager_v5)) as NetworkManager_v5[];
+        NetworkManager[] objs = FindObjectsOfType(typeof(NetworkManager)) as NetworkManager[];
         if (objs.Length > 1)
         {
             Destroy(this.gameObject);
@@ -29,34 +27,18 @@ public class NetworkManager_v5 : MonoBehaviourPunCallbacks
             DontDestroyOnLoad(this.gameObject);
         }
 
-        Init();
-        // 한번만 초기화
-        if (!isInitialized) 
+        // Debug.Log(isInitialized);
+        if (!isInitialized)
         {
+            PhotonNetwork.AutomaticallySyncScene = true;
+            SetPlayerName();
             Set();
-        }
-    }
-
-    public void Init()
-    {
-        if (SceneManager.GetActiveScene().buildIndex == 0)
-        {
-            if (!isInitialized)
-            {
-                PhotonNetwork.AutomaticallySyncScene = true;
-                SetPlayerName();
-            }
-        } else
-        {
-            if (syncManager == null)
-            {
-                syncManager = FindObjectOfType<SyncManager_v5>();
-            }
         }
     }
 
     public void Set()
     {
+        Debug.Log("network set");
         EventManager_v5 eventManager = FindObjectOfType<EventManager_v5>();
         eventManager.AddEvent("enter", Connect);
         eventManager.AddEvent("exit", LeaveRoom);
@@ -76,37 +58,48 @@ public class NetworkManager_v5 : MonoBehaviourPunCallbacks
             PlayerPrefs.SetString(playerNamePrefKey, name);
         }
 
-        Debug.Log($"Player Name : {PhotonNetwork.NickName}");
     }
 
-    /// <summary>
-    /// 로비에서 실행하는 함수들
-    /// </summary>
-    #region Launcher Methods
     public void Connect()
     {
-        Debug.Log("Connect");
+        Debug.Log("connect");
         isConnecting = true;
 
-        if (PhotonNetwork.IsConnected)
+        if (!PhotonNetwork.IsConnected)
         {
-            PhotonNetwork.JoinRandomRoom();
-        }
-        else
-        {
-            PhotonNetwork.GameVersion = gameVersion;
             PhotonNetwork.ConnectUsingSettings();
+            PhotonNetwork.GameVersion = gameVersion;
         }
     }
 
+    // 가장 나중에 실행
+    public void LoadSpace()
+    {
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            Debug.LogError("마스터 클라이언트가 아님");
+            return;
+        }
+
+        Debug.LogFormat("현재 플레이어 수 : {0}", PhotonNetwork.CurrentRoom.PlayerCount);
+
+        // 플레이어 들어올 때 마다 마스터 클라이언트 업데이트
+        // PhotonNetwork.LoadLevel("SolarSystem_v4"); 
+    }
+
+    public void LeaveRoom()
+    {
+        Debug.Log("Master Client 퇴장");
+        PhotonNetwork.LeaveRoom();
+    }
+
+    #region PUN2 Callbacks
     public override void OnConnectedToMaster()
     {
         Debug.Log("마스터 서버 연결");
 
         if (isConnecting)
-        {
             PhotonNetwork.JoinRandomRoom();
-        }
     }
     public override void OnDisconnected(DisconnectCause cause)
     {
@@ -122,50 +115,11 @@ public class NetworkManager_v5 : MonoBehaviourPunCallbacks
 
         PhotonNetwork.CreateRoom(null, roomOptions);
     }
-
     public override void OnJoinedRoom()
     {
         Debug.Log("Space Room 입장: Main Scene으로 이동");
-        //PhotonNetwork.LoadLevel("SolarSystem_v5");
-        SceneManager.LoadScene("SolarSystem_v5");
+        PhotonNetwork.LoadLevel("TestScene1");
         isConnecting = false;
-    }
-    #endregion
-
-    
-    /// <summary>
-    /// 메인 씬에서 실행하는 함수들
-    /// </summary>
-    #region main Scene
-    // 가장 나중에 실행
-    public void LoadSpace()
-    {
-        if (!PhotonNetwork.IsMasterClient)
-        {
-            Debug.LogError("마스터 클라이언트가 아님");
-            return;
-        }
-
-        Debug.LogFormat("현재 플레이어 수 : {0}", PhotonNetwork.CurrentRoom.PlayerCount);
-
-        // 플레이어 들어올 때 마다 마스터 클라이언트 업데이트
-        // syncManager.SetRoomCustomPropertyData(PropertyKey.OrbPosList);
-    }
-
-    public void LeaveRoom()
-    {
-        Debug.Log("Master Client 퇴장");
-        PhotonNetwork.LeaveRoom();
-    }
-
-    public override void OnLeftRoom()
-    {
-        Debug.Log("Space Room 퇴장: Lobby Scene으로 이동");
-
-        // syncManager.SetRoomCustomPropertyData(PropertyKey.OrbData);
-        // syncManager.SetRoomCustomPropertyData(PropertyKey.OrbPosList);
-
-        SceneManager.LoadScene(0);
     }
 
     public override void OnPlayerEnteredRoom(Player other)
@@ -175,6 +129,12 @@ public class NetworkManager_v5 : MonoBehaviourPunCallbacks
         {
             LoadSpace();
         }
+    }
+
+    public override void OnLeftRoom()
+    {
+        Debug.Log("Space Room 퇴장: Lobby Scene으로 이동");
+        SceneManager.LoadScene(0);
     }
 
     public override void OnPlayerLeftRoom(Player other)
@@ -194,10 +154,8 @@ public class NetworkManager_v5 : MonoBehaviourPunCallbacks
         {
             if (PhotonNetwork.CurrentRoom != null)
             {
-                //syncManager.SetCustomPropertiesFromMaster();
             }
 
-            //GameManager_v4.Inst.UIManager.SetAccess_OrbdataEditor(newMasterClient.IsLocal);
         }
     }
     #endregion

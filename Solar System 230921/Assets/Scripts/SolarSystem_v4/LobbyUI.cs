@@ -8,18 +8,21 @@ public class LobbyUI : MonoBehaviour
     public string startBtnName = "StartBtn";
     public string connectTxtName = "ConnectingTxt";
 
-    GameObject StartBtn;
-    GameObject progressText;
+    private GameObject StartBtn;
+    private GameObject progressText;
 
     private void Awake()
     {
-        if (StartBtn == null)
+        if (StartBtn == null) 
+        { 
             StartBtn = GameObject.Find(startBtnName);
+        }
         if (progressText == null)
+        {
             progressText = GameObject.Find(connectTxtName);
+        }
 
         StartBtn.GetComponent<Button>().onClick.AddListener(Connect);
-        // StartBtn.GetComponent<Button>().onClick.AddListener(networkManager.Connect);
 
         StartBtn.SetActive(true);
         progressText.SetActive(false);

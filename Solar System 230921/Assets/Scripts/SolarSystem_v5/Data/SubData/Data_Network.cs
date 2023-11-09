@@ -69,18 +69,15 @@ public class Data_Network : EssentialData
             {
                 customProperties = value;
 
-                if (!isMaster)
+                data.OrbDatas = data.converter.FromJsonToOrbDatas(GetCustomProperty_stringArr(PropertyKey.OrbData));
+                data.NowOrbID = GetCustomProperty_Int(PropertyKey.OrbID);
+                for (int i = 0; i < data.OrbTrns.Count; i++)
                 {
-                    data.OrbDatas = data.converter.FromJsonToOrbDatas(GetCustomProperty_stringArr(PropertyKey.OrbData));
-                    data.NowOrbID = GetCustomProperty_Int(PropertyKey.OrbID);
-                    for (int i = 0; i < data.OrbTrns.Count; i++)
-                    {
-                        Transform trn = data.OrbTrns[i];
-                        Vector3 pos = GetCustomProperty_Vec3Array(PropertyKey.OrbPosList)[i];
-                        Vector3 rot = GetCustomProperty_Vec3Array(PropertyKey.OrbRotList)[i];
-                        trn.localPosition = pos;
-                        trn.localRotation = Quaternion.Euler(rot);
-                    }
+                    Transform trn = data.OrbTrns[i];
+                    Vector3 pos = GetCustomProperty_Vec3Array(PropertyKey.OrbPosList)[i];
+                    Vector3 rot = GetCustomProperty_Vec3Array(PropertyKey.OrbRotList)[i];
+                    trn.localPosition = pos;
+                    trn.localRotation = Quaternion.Euler(rot);
                 }
             }
         }
@@ -96,15 +93,15 @@ public class Data_Network : EssentialData
     //===============================================================================
     public void SetCustomProperty(PropertyKey key, int _id)
     {
-        CustomPropeties[key.ToString()] = _id;
+        customProperties[key.ToString()] = _id;
     }
     public void SetCustomProperty(PropertyKey key, string[] _strings)
     {
-        CustomPropeties[key.ToString()] = _strings;
+        customProperties[key.ToString()] = _strings;
     }
     public void SetCustomProperty(PropertyKey key, Vector3[] _vec3)
     {
-        CustomPropeties[key.ToString()] = _vec3;
+        customProperties[key.ToString()] = _vec3;
     }
 
     public int GetCustomProperty_Int(PropertyKey key)
@@ -113,22 +110,22 @@ public class Data_Network : EssentialData
         {
             Debug.Log($"{key}는 없는 키값 입니다.");
         }
-        return (int)CustomPropeties[key.ToString()];
+        return (int)customProperties[key.ToString()];
     }
     public string[] GetCustomProperty_stringArr(PropertyKey key)
     {
-        if (!CustomPropeties.ContainsKey(key.ToString()))
+        if (!customProperties.ContainsKey(key.ToString()))
         {
             Debug.Log($"{key}는 없는 키값 입니다.");
         }
-        return (string[])CustomPropeties[key.ToString()];
+        return (string[])customProperties[key.ToString()];
     }
     public Vector3[] GetCustomProperty_Vec3Array(PropertyKey key)
     {
-        if (!CustomPropeties.ContainsKey(key.ToString()))
+        if (!customProperties.ContainsKey(key.ToString()))
         {
             Debug.Log($"{key}는 없는 키값 입니다.");
         }
-        return (Vector3[])CustomPropeties[key.ToString()];
+        return (Vector3[])customProperties[key.ToString()];
     }
 }

@@ -7,6 +7,7 @@ public class SolarSystemController_v4 : MonoBehaviour
     public GameObject planetTemplete;
 
     private OrbDataManager_v4 dataManager;
+    private static SolarSystemController_v4 instance;
 
     [Space(10)]
 
@@ -19,14 +20,13 @@ public class SolarSystemController_v4 : MonoBehaviour
     public void Init()
     {
         // 한 씬에 마스터 클라이언트가 생성한 태양계 이외에 생성 X
-        SolarSystemController_v4[] objs = FindObjectsOfType(typeof(SolarSystemController_v4)) as SolarSystemController_v4[];
-        if (objs.Length > 1)
+        if (instance == null)
         {
-            Destroy(this.gameObject);
+            instance = this;
         }
         else
         {
-            DontDestroyOnLoad(this.gameObject);
+            Destroy(this.gameObject);
         }
 
         dataManager = GameManager_v4.Inst.DataManager;
