@@ -19,6 +19,8 @@ public class SyncManager_v5 : MonoBehaviourPunCallbacks
         data = FindObjectOfType<Data_Network>();
         data.Init();
 
+        Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties);
+
         timer.InitTimer(10);
         timer.OnTimeDone += () => { 
             // 위치 동기화 함수

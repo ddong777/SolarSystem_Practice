@@ -1,17 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class GameManager_v5 : MonoBehaviour
 {
     private static GameManager_v5 instance;
 
-    private SolarSystemController_v5 solarSystem;
-    private UIManager_v5 uiManager;
-    private EventManager_v5 eventManager;
-    private CamController_v5 cameraController;
+    public SolarSystemController_v5 solarSystem;
+    public UIManager_v5 uiManager;
+    public EventManager_v5 eventManager;
+    public CamController_v5 cameraController;
 
-    private SyncManager_v5 serverSyncManager;
+    public SyncManager_v5 serverSyncManager;
+
+    private static bool isInitialized = false;
 
     private void Awake()
     {
@@ -29,16 +32,20 @@ public class GameManager_v5 : MonoBehaviour
 
     private void OnEnable()
     {
+        if (isInitialized) return;
         Init();
     }
 
     private void Start()
     {
+        if (isInitialized) return;
         Set();
     }
 
     private void Init()
     {
+        Debug.Log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        
         serverSyncManager = FindObjectOfType<SyncManager_v5>();
 
         solarSystem = FindObjectOfType<SolarSystemController_v5>();
@@ -69,5 +76,7 @@ public class GameManager_v5 : MonoBehaviour
 
         eventManager.AddEvent("nowOrbID", cameraController.Set);
         eventManager.AddEvent("orbDatas", solarSystem.UpdateAllOrb);
+
+        isInitialized = true;
     }
 }

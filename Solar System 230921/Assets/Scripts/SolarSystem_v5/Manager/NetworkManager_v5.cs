@@ -6,6 +6,7 @@ using Photon.Realtime;
 
 public class NetworkManager_v5 : MonoBehaviourPunCallbacks
 {
+    private static NetworkManager_v5 instance;
     private SyncManager_v5 syncManager;
 
     private string gameVersion = "2";
@@ -19,17 +20,18 @@ public class NetworkManager_v5 : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        NetworkManager_v5[] objs = FindObjectsOfType(typeof(NetworkManager_v5)) as NetworkManager_v5[];
-        if (objs.Length > 1)
+        if (instance == null)
         {
-            Destroy(this.gameObject);
+            instance = this;
+            
         }
         else
         {
-            DontDestroyOnLoad(this.gameObject);
+            Destroy(this.gameObject);
         }
 
         Init();
+
         // 한번만 초기화
         if (!isInitialized) 
         {
@@ -43,6 +45,7 @@ public class NetworkManager_v5 : MonoBehaviourPunCallbacks
         {
             if (!isInitialized)
             {
+                Debug.Log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
                 PhotonNetwork.AutomaticallySyncScene = true;
                 SetPlayerName();
             }
