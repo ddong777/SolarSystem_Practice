@@ -43,9 +43,9 @@ public class Data_Network : EssentialData
 
     public Hashtable CustomPropeties
     {
-        get
+        get // 마스터 클라이언트
         {
-            // 마스터클라이언트이면서, 카메라 싱크 켜두었을 경우에만 NowOrbID 서버로 전송
+            // 마스터 클라이언트이면서, 카메라 싱크 켜두었을 경우에만 NowOrbID 서버로 전송
             if (IsMaster && IsSyncMode)
             {
                 SetCustomProperty(PropertyKey.OrbID, data.NowOrbID);
@@ -58,7 +58,7 @@ public class Data_Network : EssentialData
             return customProperties;
         }
 
-        set
+        set // 클라이언트
         {
             if (customProperties != value && value.ContainsKey(PropertyKey.ID.ToString()))
             {
@@ -84,9 +84,12 @@ public class Data_Network : EssentialData
         }
     }
 
+    //===================================================================
+
     public void Init(bool _isMaster)
     {
-        base.Init();
+        data = FindObjectOfType<DataContainer>();
+
         IsMaster = _isMaster;
     }
 
@@ -97,6 +100,10 @@ public class Data_Network : EssentialData
 
         for (int i = 0; i < data.OrbTrns.Count; i++)
         {
+            if (data.OrbTrns[i] == null)
+            {
+                return;
+            }
             _pos[i] = data.OrbTrns[i].transform.localPosition;
             _rot[i] = data.OrbTrns[i].transform.localRotation.eulerAngles;
         }

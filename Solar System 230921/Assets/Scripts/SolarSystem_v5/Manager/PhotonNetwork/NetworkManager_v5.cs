@@ -57,6 +57,7 @@ public class NetworkManager_v5 : MonoBehaviourPunCallbacks
     public void Set()
     {
         EventManager_v5 eventManager = FindObjectOfType<EventManager_v5>();
+        eventManager.ResetBaseEvents();
         eventManager.AddBaseEvent("enter", Connect);
         eventManager.AddBaseEvent("exit", LeaveRoom);
         isInitialized = true;
@@ -188,11 +189,6 @@ public class NetworkManager_v5 : MonoBehaviourPunCallbacks
         Debug.Log($"방장이 나갔습니다. 현재 방장은 {newMasterClient.NickName}입니다.");
         if (newMasterClient.IsMasterClient)
         {
-            if (PhotonNetwork.CurrentRoom != null)
-            {
-                //syncManager.SetCustomPropertiesFromMaster();
-            }
-
             syncManager.OnMasterClientChange(); 
         }
     }

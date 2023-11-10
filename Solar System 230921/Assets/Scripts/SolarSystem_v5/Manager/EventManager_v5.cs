@@ -114,6 +114,16 @@ public class EventManager_v5 : MonoBehaviour
         }
     }
 
+    public void resetEvents()
+    {
+        events.Clear();
+    }
+
+    public void ResetBaseEvents()
+    {
+        baseEvents.Clear();
+    }
+
     public UnityAction GetEvent(string _eventName) {
         if (events.ContainsKey(_eventName))
         {

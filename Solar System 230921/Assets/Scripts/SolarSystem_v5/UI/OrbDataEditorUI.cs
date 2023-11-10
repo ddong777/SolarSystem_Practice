@@ -42,11 +42,6 @@ public class OrbDataEditorUI : MonoBehaviour, IReceiver
         SetEditor(_datas);
     }
 
-    public void SetEvent(UnityAction<Dictionary<string, float>> _syncFunc1)
-    {
-        SetApplyBtn(_syncFunc1);
-    }
-
     private void SetAccess(bool value)
     {
         orbTypeDrd.interactable = value;
@@ -64,9 +59,14 @@ public class OrbDataEditorUI : MonoBehaviour, IReceiver
         applyBtn.gameObject.SetActive(value);
     }
 
+    public void SetEvent(UnityAction<Dictionary<string, float>> _syncFunc1)
+    {
+        SetApplyBtn(_syncFunc1);
+    }
     private void SetApplyBtn(UnityAction<Dictionary<string, float>> func)
     {
         applyBtn.onClick.RemoveAllListeners();
+        Debug.Log("Editor ApplyBtn pressed");
         applyBtn.onClick.AddListener(() => func(GetOrbData()));
     }
 

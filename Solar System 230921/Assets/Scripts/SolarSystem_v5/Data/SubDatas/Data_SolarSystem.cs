@@ -40,9 +40,11 @@ public class Data_SolarSystem : EssentialData
         }
     }
 
+    //===================================================================
+
     public override void Init()
     {
-        base.Init();
+        data = FindObjectOfType<DataContainer>();
 
         if (orbDatas.Count <= 0)
         {

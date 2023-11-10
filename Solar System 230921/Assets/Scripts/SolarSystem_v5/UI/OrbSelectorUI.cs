@@ -81,9 +81,22 @@ public class OrbSelectorUI : MonoBehaviour, IReceiver
 
     public void ReceiveData<T>(T _data)
     {
-        if (_data is Dictionary<string, float>) 
+        if (_data is int)
+        {
+            nowID = (int)(object)_data;
+        }
+        else if (_data is Dictionary<string, float>) 
         {
             SetSelector(_data as Dictionary<string, float>);
+        }
+        else if (_data is List<Dictionary<string, float>>)
+        {
+            List<Dictionary<string, float>> temp = _data as List<Dictionary<string, float>>;
+            for (int i = 0; i < orbBtnList.Count; i++)
+            {
+                nowID = i;
+                SetSelector(temp[i]);
+            }
         }
     }
 }

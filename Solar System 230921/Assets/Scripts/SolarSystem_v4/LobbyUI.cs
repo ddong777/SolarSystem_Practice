@@ -9,7 +9,7 @@ public class LobbyUI : MonoBehaviour
     public string connectTxtName = "ConnectingTxt";
 
     private GameObject StartBtn;
-    private GameObject progressText;
+    private GameObject progressTxt;
 
     private void Awake()
     {
@@ -17,20 +17,20 @@ public class LobbyUI : MonoBehaviour
         { 
             StartBtn = GameObject.Find(startBtnName);
         }
-        if (progressText == null)
+        if (progressTxt == null)
         {
-            progressText = GameObject.Find(connectTxtName);
+            progressTxt = GameObject.Find(connectTxtName);
         }
 
-        StartBtn.GetComponent<Button>().onClick.AddListener(Connect);
+        StartBtn.GetComponent<Button>().onClick.AddListener(OnStartBtnPressed);
 
         StartBtn.SetActive(true);
-        progressText.SetActive(false);
+        progressTxt.SetActive(false);
     }
 
-    public void Connect()
+    public void OnStartBtnPressed()
     {
         StartBtn.SetActive(false);
-        progressText.SetActive(true);
+        progressTxt.SetActive(true);
     }
 }

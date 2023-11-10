@@ -6,10 +6,9 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class SyncManager_v5 : MonoBehaviourPunCallbacks
 {
-    private Data_Network data;
     private Timer timer = new Timer();
+    private Data_Network data;
 
-    public bool StartInOfflineMode => PhotonNetwork.PhotonServerSettings.StartInOfflineMode;
     public bool IsMasterClient => PhotonNetwork.IsMasterClient;
 
     private void LateUpdate()

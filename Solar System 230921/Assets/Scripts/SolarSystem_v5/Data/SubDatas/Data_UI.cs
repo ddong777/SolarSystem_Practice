@@ -20,6 +20,8 @@ public class Data_UI : EssentialData, ISender, IReceiver
             {
                 nowOrbID = value;
                 data.NowOrbID = nowOrbID;
+
+                SendData(nowOrbID);
                 SendData(NowOrbData);
                 SendData(NowOrbTrn);
             }
@@ -89,9 +91,6 @@ public class Data_UI : EssentialData, ISender, IReceiver
         }
         set 
         {
-            // 데이터가 같은데 업데이트 하고 있음
-            // 딕셔너리 비교용 함수 필요
-            // 같은 데이터 보냈을 때는 서버 업데이트 할 필요 없도록
             if (nowOrbData.Values != value.Values)
             {
                 nowOrbData = value;
@@ -122,6 +121,25 @@ public class Data_UI : EssentialData, ISender, IReceiver
 
     //===================================================================
 
+    public override void Init()
+    {
+        data = FindObjectOfType<DataContainer>();
+    }
+
+    // 서버에서 데이터 넘어왔을 때 data container -> data_ui 콜이 안되서 따로
+    // 정리 필요
+    public override void UpdateData()
+    {
+        if (data == null)
+        {
+            return;
+        }
+        SendData(NowOrbData);
+        SendData(OrbDatas);
+    }
+
+    //===================================================================
+
     private List<IReceiver> receivers = new List<IReceiver>();
 
     public void Attach(IReceiver receiver)
@@ -138,7 +156,6 @@ public class Data_UI : EssentialData, ISender, IReceiver
     {
         foreach (IReceiver r in receivers)
         {
-            //Debug.Log("send message : " + GetType().Name + " -> " + r.GetType().Name);
             r.ReceiveData(data);
         }
     }

@@ -16,7 +16,6 @@ public class SingleButton : MonoBehaviour
     }
     private void Start()
     {
-        btn.onClick.RemoveAllListeners();
         btn.onClick.AddListener(() => { Debug.Log("button pressed: "+eventName); });
         btn.onClick.AddListener(eventManager.GetEvent(eventName));
     }

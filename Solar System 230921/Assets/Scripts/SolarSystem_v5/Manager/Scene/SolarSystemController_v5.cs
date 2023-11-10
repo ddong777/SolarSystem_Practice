@@ -90,21 +90,6 @@ public class SolarSystemController_v5 : MonoBehaviour
         orbs.Add(_star);
     }
 
-    public void UpdateOrbData(int _id, OrbData _data)
-    {
-        orbs[_id].data = _data;
-    }
-    public void UpdateOrbData(int _id, GameObject _prefab)
-    {
-        orbs[_id].data.orbPrefab = _prefab;
-    }
-
-    public void UpdateOrbTrn(int _id, Vector3 _pos, Vector3 _rot)
-    {
-        orbs[_id].Position = _pos;
-        orbs[_id].Rotation = _rot;
-    }
-
     public void UpdateAllOrb()
     {
         if (!isReady)
@@ -125,11 +110,6 @@ public class SolarSystemController_v5 : MonoBehaviour
             orbs[i].UpdateTrnasform();
             orbs[i].InitMove();
         }
-    }
-
-    public void IsReady(bool _ready)
-    {
-        isReady = _ready;
     }
 
     public void MoveAllOrbs()

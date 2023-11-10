@@ -4,9 +4,9 @@ using UnityEngine.Events;
 
 public class DataContainer : EssentialData
 {
-    private EventManager_v5 eventManager;
-    
     public Converter converter;
+    private EventManager_v5 eventManager;
+
     public List<EssentialData> subDatas = new List<EssentialData>();
 
     private bool isMaster = true;
@@ -69,26 +69,26 @@ public class DataContainer : EssentialData
     private List<OrbData> orbDatas = new List<OrbData>();
     public List<OrbData> OrbDatas
     {
-        get 
-        {
-            return orbDatas; 
-        }
+        get { return orbDatas; }
         set 
         {
-            orbDatas = value;
-            eventManager.GetEvent("orbDatas")?.Invoke();
+            if ( orbDatas != value && value != null)
+            {
+                orbDatas = value;
+                foreach (EssentialData sub in subDatas)
+                {
+                    sub.UpdateData();
+                }
+                eventManager.GetEvent("orbDatas")?.Invoke();
+            }
         }
     }
-    public UnityAction OnOrbDatasChange;
 
 
     private List<Transform> orbTrns = new List<Transform>();
     public List<Transform> OrbTrns
     {
-        get 
-        { 
-            return orbTrns; 
-        }
+        get { return orbTrns; }
         set 
         {
             if (orbTrns != value)
@@ -98,7 +98,8 @@ public class DataContainer : EssentialData
             }
         }
     }
-    public UnityAction OnOrbTrnsChange;
+
+    //===========================================================================
 
     private void Awake()
     {

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
 
 public class GameManager_v5 : MonoBehaviour
 {
@@ -30,7 +29,6 @@ public class GameManager_v5 : MonoBehaviour
 
     public void OnEnable()
     {
-        if (!PhotonNetwork.IsConnected) return;
         Init();
         Set();
     }
@@ -60,6 +58,8 @@ public class GameManager_v5 : MonoBehaviour
         serverSyncManager.Set();
         
         // 이벤트에 매니저 함수들 등록
+        eventManager.resetEvents();
+
         eventManager.SetEvent("isMaster", () => { Debug.Log("isMaster 값 변경"); });
         eventManager.SetEvent("isSyncMode", () => { Debug.Log("isSyncMode 값 변경"); });
         eventManager.SetEvent("nowOrbID", () => { Debug.Log("nowOrbID 값 변경"); });
@@ -67,9 +67,9 @@ public class GameManager_v5 : MonoBehaviour
         eventManager.SetEvent("orbTrns", () => { Debug.Log("orbTrns 값 변경"); });
 
         eventManager.AddEvent("nowOrbID", cameraController.Set);
-        eventManager.AddEvent("orbDatas", solarSystem.UpdateAllOrb);
-
         eventManager.AddEvent("nowOrbID", serverSyncManager.Send_FromMaster);
+
+        eventManager.AddEvent("orbDatas", solarSystem.UpdateAllOrb);
         eventManager.AddEvent("orbDatas", serverSyncManager.Send_FromMaster);
 
         eventManager.AddEvent("isSyncMode", serverSyncManager.Send_FromMaster);
