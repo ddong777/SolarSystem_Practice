@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class SolarSystemController_v5 : MonoBehaviour
@@ -11,6 +12,8 @@ public class SolarSystemController_v5 : MonoBehaviour
 
     public Star_v5 star;
     public List<Orb_v5> orbs;
+
+    private bool isReady = false;
 
     private void Update()
     {
@@ -27,6 +30,8 @@ public class SolarSystemController_v5 : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
+        isReady = false;
 
         data = FindObjectOfType<Data_SolarSystem>();
         data.Init();
@@ -66,6 +71,7 @@ public class SolarSystemController_v5 : MonoBehaviour
                 SetOrb(orbFactory.Create(data));
             }
         }
+        isReady = true;
     }
 
     public void SetCapacity(int capacity)
@@ -101,8 +107,19 @@ public class SolarSystemController_v5 : MonoBehaviour
 
     public void UpdateAllOrb()
     {
+        if (!isReady)
+        {
+            return;
+        }
         for (int i = 0; i < orbs.Count; i++)
         {
+            // 태양계 생성되기 전에 호출됐을때 실행되지 않도록 하기 위해
+            // 데이터 컨테이너에서 eventManager.GetEvent("orbDatas")?.Invoke(); 가
+            // 태양계 생성보다 먼저 호출되지 않도록 코드 고쳐야함
+            if (orbs[i] == null)
+            {
+                break;
+            }
             orbs[i].SetData(data.OrbDatas[i]);
             orbs[i].SetFeature(orbFactory.GetPrefab(orbs[i].data.orbType));
             orbs[i].UpdateTrnasform();
@@ -110,8 +127,17 @@ public class SolarSystemController_v5 : MonoBehaviour
         }
     }
 
+    public void IsReady(bool _ready)
+    {
+        isReady = _ready;
+    }
+
     public void MoveAllOrbs()
     {
+        if (!isReady)
+        {
+            return;
+        }
         foreach (Orb_v5 _orb in orbs)
         {
             _orb.Move();

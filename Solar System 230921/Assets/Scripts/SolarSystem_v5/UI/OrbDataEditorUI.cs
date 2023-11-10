@@ -105,7 +105,12 @@ public class OrbDataEditorUI : MonoBehaviour, IReceiver
 
     void IReceiver.ReceiveData<T>(T _data)
     {
-        if (_data is Dictionary<string, float>)
+        if (_data is bool)
+        {
+            // isMaster
+            SetAccess((bool)(object)_data);
+        }
+        else if (_data is Dictionary<string, float>)
         {
             SetEditor(_data as Dictionary<string, float>);
         }

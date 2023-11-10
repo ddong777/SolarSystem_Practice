@@ -4,10 +4,10 @@ using UnityEngine.Events;
 
 public class DataContainer : EssentialData
 {
+    private EventManager_v5 eventManager;
+    
     public Converter converter;
     public List<EssentialData> subDatas = new List<EssentialData>();
-
-    private EventManager_v5 eventManager;
 
     private bool isMaster = true;
     public override bool IsMaster

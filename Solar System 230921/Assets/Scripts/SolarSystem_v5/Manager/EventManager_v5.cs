@@ -4,6 +4,7 @@ using UnityEngine.Events;
 
 public class EventManager_v5 : MonoBehaviour
 {
+    public Dictionary<string, UnityAction> baseEvents = new Dictionary<string, UnityAction>();
     public Dictionary<string, UnityAction> events = new Dictionary<string, UnityAction>();
 
     private void Awake()
@@ -24,6 +25,37 @@ public class EventManager_v5 : MonoBehaviour
         foreach (KeyValuePair<string, UnityAction> ev in events)
         {
             Debug.Log($"{ev.Key} - {ev.Value}");
+        }
+    }
+
+    public void SetBaseEvent(string _eventName, UnityAction _action)
+    {
+        if (baseEvents.ContainsKey(_eventName))
+        {
+            baseEvents.Remove(_eventName);
+            baseEvents.Add(_eventName, _action);
+        }
+        else
+        {
+            baseEvents.Add(_eventName, _action);
+        }
+    }
+
+    public void AddBaseEvent(string _eventName, UnityAction _event)
+    {
+        Debug.Log("add event : " + _eventName);
+        // 있는 이벤트인지 확인
+        if (baseEvents.ContainsKey(_eventName))
+        {
+            baseEvents[_eventName] -= _event;
+            baseEvents[_eventName] += _event;
+        }
+        else
+        {
+            UnityAction _temp = () => { };
+            _temp += _event;
+
+            SetBaseEvent(_eventName, _temp);
         }
     }
 
@@ -86,6 +118,10 @@ public class EventManager_v5 : MonoBehaviour
         if (events.ContainsKey(_eventName))
         {
             return events[_eventName];
+        }
+        else if (baseEvents.ContainsKey(_eventName))
+        {
+            return baseEvents[_eventName];
         }
         else 
         {

@@ -39,7 +39,6 @@ public class BackgroundUI : MonoBehaviour, IReceiver
     private void SetAccess(bool value)
     {
         clientTxt.gameObject.SetActive(value);
-        camSyncTgl.gameObject.SetActive(value);
     }
 
     private void SetNowOrbTrn(Transform _orbTrn)
@@ -65,6 +64,7 @@ public class BackgroundUI : MonoBehaviour, IReceiver
     {
         if (_data is bool)
         {
+            // isMaster
             SetAccess((bool)(object)_data);
         } 
         else if (_data is Transform)

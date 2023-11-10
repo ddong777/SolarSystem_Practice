@@ -13,13 +13,21 @@ public class UIManager_v5 : MonoBehaviour
     public OrbSelectorUI orbSelectUI;
     public BackgroundUI singleUI;
 
+    private bool isReady = false;
+
     private void Update()
     {
+        if (!isReady)
+        {
+            return;
+        }
         singleUI.UpdateUI();
     }
 
     public void Init()
     {
+        isReady = false;
+
         data = FindObjectOfType<Data_UI>();
         data.Init();
 
@@ -45,5 +53,7 @@ public class UIManager_v5 : MonoBehaviour
         dataEditUI.SetEvent((value) => { data.NowOrbData = value; });
         orbSelectUI.SetEvent((value) => { data.NowOrbID = value; });
         singleUI.SetEvent((value) => { data.IsSyncMode = value; });
+
+        isReady = true;
     }
 }

@@ -16,7 +16,7 @@ public class Data_Network : EssentialData
             if (isMaster != value)
             {
                 isMaster = value;
-                data.IsMaster = true;
+                data.IsMaster = isMaster;
             }
         }
     }
@@ -33,12 +33,10 @@ public class Data_Network : EssentialData
 
     //===========================================================================
 
-    // 항상 모든 데이터 값 갱신은 불필요
-    // 값이 같다면 수행하지 갱신하지 않는걸로 Sync Manager에서 세팅해줘야
     private Hashtable customProperties = new Hashtable() { 
         { PropertyKey.ID.ToString(), 0 },
+        { PropertyKey.OrbID.ToString(), 0 },
         { PropertyKey.OrbData.ToString(), null },
-        { PropertyKey.OrbID.ToString(), null },
         { PropertyKey.OrbPosList.ToString() , null },
         { PropertyKey.OrbRotList.ToString(), null },
     };
@@ -47,30 +45,33 @@ public class Data_Network : EssentialData
     {
         get
         {
-            SetCustomProperty(PropertyKey.OrbData, data.converter.FromOrbDatasToJson(data.OrbDatas));
-            SetCustomProperty(PropertyKey.OrbID, data.NowOrbID);
-            Vector3[] _pos = new Vector3[data.OrbTrns.Count];
-            Vector3[] _rot = new Vector3[data.OrbTrns.Count];
-
-            for (int i = 0; i < data.OrbTrns.Count; i++)
+            // 마스터클라이언트이면서, 카메라 싱크 켜두었을 경우에만 NowOrbID 서버로 전송
+            if (IsMaster && IsSyncMode)
             {
-                _pos[i] = data.OrbTrns[i].transform.localPosition;
-                _rot[i] = data.OrbTrns[i].transform.localRotation.eulerAngles;
+                SetCustomProperty(PropertyKey.OrbID, data.NowOrbID);
             }
-            SetCustomProperty(PropertyKey.OrbPosList, _pos);
-            SetCustomProperty(PropertyKey.OrbRotList, _rot);
+
+            SetCustomProperty(PropertyKey.OrbData, data.converter.FromOrbDatasToJson(data.OrbDatas));
+
+            SetPosNRotData_FromMainData();
 
             return customProperties;
         }
 
         set
         {
-            if (customProperties != value && value != null)
+            if (customProperties != value && value.ContainsKey(PropertyKey.ID.ToString()))
             {
                 customProperties = value;
 
+                // 클라이언트이면서, 카메라 싱크 켜두었을 경우에만 NowOrbID 서버로부터 동기화
+                if (!IsMaster && IsSyncMode)
+                {
+                    data.NowOrbID = GetCustomProperty_Int(PropertyKey.OrbID);
+                }
+
                 data.OrbDatas = data.converter.FromJsonToOrbDatas(GetCustomProperty_stringArr(PropertyKey.OrbData));
-                data.NowOrbID = GetCustomProperty_Int(PropertyKey.OrbID);
+
                 for (int i = 0; i < data.OrbTrns.Count; i++)
                 {
                     Transform trn = data.OrbTrns[i];
@@ -83,11 +84,30 @@ public class Data_Network : EssentialData
         }
     }
 
-    public void Init(bool _isMaster, Hashtable _properties)
+    public void Init(bool _isMaster)
     {
         base.Init();
         IsMaster = _isMaster;
-        CustomPropeties = _properties;
+    }
+
+    private void SetPosNRotData_FromMainData()
+    {
+        Vector3[] _pos = new Vector3[data.OrbTrns.Count];
+        Vector3[] _rot = new Vector3[data.OrbTrns.Count];
+
+        for (int i = 0; i < data.OrbTrns.Count; i++)
+        {
+            _pos[i] = data.OrbTrns[i].transform.localPosition;
+            _rot[i] = data.OrbTrns[i].transform.localRotation.eulerAngles;
+        }
+        SetCustomProperty(PropertyKey.OrbPosList, _pos);
+        SetCustomProperty(PropertyKey.OrbRotList, _rot);
+    }
+    public Hashtable SetCustomPropertiesPosNRot()
+    {
+        SetPosNRotData_FromMainData();
+
+        return customProperties;
     }
 
     //===============================================================================
@@ -106,7 +126,7 @@ public class Data_Network : EssentialData
 
     public int GetCustomProperty_Int(PropertyKey key)
     {
-        if (!CustomPropeties.ContainsKey(key.ToString()))
+        if (!customProperties.ContainsKey(key.ToString()))
         {
             Debug.Log($"{key}는 없는 키값 입니다.");
         }

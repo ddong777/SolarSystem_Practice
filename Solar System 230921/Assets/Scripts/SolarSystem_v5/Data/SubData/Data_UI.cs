@@ -91,6 +91,7 @@ public class Data_UI : EssentialData, ISender, IReceiver
         {
             // 데이터가 같은데 업데이트 하고 있음
             // 딕셔너리 비교용 함수 필요
+            // 같은 데이터 보냈을 때는 서버 업데이트 할 필요 없도록
             if (nowOrbData.Values != value.Values)
             {
                 nowOrbData = value;

@@ -43,12 +43,8 @@ public class NetworkManager_v5 : MonoBehaviourPunCallbacks
     {
         if (SceneManager.GetActiveScene().buildIndex == 0)
         {
-            if (!isInitialized)
-            {
-                Debug.Log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-                PhotonNetwork.AutomaticallySyncScene = true;
-                SetPlayerName();
-            }
+            PhotonNetwork.AutomaticallySyncScene = true;
+            SetPlayerName();
         } else
         {
             if (syncManager == null)
@@ -61,8 +57,8 @@ public class NetworkManager_v5 : MonoBehaviourPunCallbacks
     public void Set()
     {
         EventManager_v5 eventManager = FindObjectOfType<EventManager_v5>();
-        eventManager.AddEvent("enter", Connect);
-        eventManager.AddEvent("exit", LeaveRoom);
+        eventManager.AddBaseEvent("enter", Connect);
+        eventManager.AddBaseEvent("exit", LeaveRoom);
         isInitialized = true;
     }
 
@@ -88,7 +84,7 @@ public class NetworkManager_v5 : MonoBehaviourPunCallbacks
     #region Launcher Methods
     public void Connect()
     {
-        Debug.Log("Connect");
+        //Debug.Log("Connect");
         isConnecting = true;
 
         if (PhotonNetwork.IsConnected)
@@ -129,8 +125,7 @@ public class NetworkManager_v5 : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("Space Room 입장: Main Scene으로 이동");
-        //PhotonNetwork.LoadLevel("SolarSystem_v5");
-        SceneManager.LoadScene("SolarSystem_v5");
+        PhotonNetwork.LoadLevel("SolarSystem_v5");
         isConnecting = false;
     }
     #endregion
@@ -152,7 +147,7 @@ public class NetworkManager_v5 : MonoBehaviourPunCallbacks
         Debug.LogFormat("현재 플레이어 수 : {0}", PhotonNetwork.CurrentRoom.PlayerCount);
 
         // 플레이어 들어올 때 마다 마스터 클라이언트 업데이트
-        // syncManager.SetRoomCustomPropertyData(PropertyKey.OrbPosList);
+        syncManager.Send_FromMaster();
     }
 
     public void LeaveRoom()
@@ -165,9 +160,7 @@ public class NetworkManager_v5 : MonoBehaviourPunCallbacks
     {
         Debug.Log("Space Room 퇴장: Lobby Scene으로 이동");
 
-        // syncManager.SetRoomCustomPropertyData(PropertyKey.OrbData);
-        // syncManager.SetRoomCustomPropertyData(PropertyKey.OrbPosList);
-
+        syncManager.Send_FromMaster();
         SceneManager.LoadScene(0);
     }
 
@@ -200,7 +193,7 @@ public class NetworkManager_v5 : MonoBehaviourPunCallbacks
                 //syncManager.SetCustomPropertiesFromMaster();
             }
 
-            //GameManager_v4.Inst.UIManager.SetAccess_OrbdataEditor(newMasterClient.IsLocal);
+            syncManager.OnMasterClientChange(); 
         }
     }
     #endregion

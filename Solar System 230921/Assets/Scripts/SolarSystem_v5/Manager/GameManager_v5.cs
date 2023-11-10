@@ -14,8 +14,6 @@ public class GameManager_v5 : MonoBehaviour
 
     public SyncManager_v5 serverSyncManager;
 
-    private static bool isInitialized = false;
-
     private void Awake()
     {
         Screen.SetResolution(960, 540, false);
@@ -30,22 +28,15 @@ public class GameManager_v5 : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    public void OnEnable()
     {
-        if (isInitialized) return;
+        if (!PhotonNetwork.IsConnected) return;
         Init();
-    }
-
-    private void Start()
-    {
-        if (isInitialized) return;
         Set();
     }
 
     private void Init()
     {
-        Debug.Log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-        
         serverSyncManager = FindObjectOfType<SyncManager_v5>();
 
         solarSystem = FindObjectOfType<SolarSystemController_v5>();
@@ -53,7 +44,7 @@ public class GameManager_v5 : MonoBehaviour
         eventManager = FindObjectOfType<EventManager_v5>();
         cameraController = FindObjectOfType<CamController_v5>();
 
-        //serverSyncManager.Init();
+        serverSyncManager.Init();
 
         solarSystem.Init();
         uiManager.Init();
@@ -65,8 +56,9 @@ public class GameManager_v5 : MonoBehaviour
         solarSystem.Set();
         uiManager.Set();
         cameraController.Set();
-        //serverSyncManager.Set();
 
+        serverSyncManager.Set();
+        
         // 이벤트에 매니저 함수들 등록
         eventManager.SetEvent("isMaster", () => { Debug.Log("isMaster 값 변경"); });
         eventManager.SetEvent("isSyncMode", () => { Debug.Log("isSyncMode 값 변경"); });
@@ -77,6 +69,10 @@ public class GameManager_v5 : MonoBehaviour
         eventManager.AddEvent("nowOrbID", cameraController.Set);
         eventManager.AddEvent("orbDatas", solarSystem.UpdateAllOrb);
 
-        isInitialized = true;
+        eventManager.AddEvent("nowOrbID", serverSyncManager.Send_FromMaster);
+        eventManager.AddEvent("orbDatas", serverSyncManager.Send_FromMaster);
+
+        eventManager.AddEvent("isSyncMode", serverSyncManager.Send_FromMaster);
+        eventManager.AddEvent("isSyncMode", serverSyncManager.SendFromClient);
     }
 }
