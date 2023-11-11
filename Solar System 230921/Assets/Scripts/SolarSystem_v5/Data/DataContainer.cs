@@ -72,7 +72,7 @@ public class DataContainer : EssentialData
         get { return orbDatas; }
         set 
         {
-            if ( orbDatas != value && value != null)
+            if (value.Count > 0 )
             {
                 orbDatas = value;
                 foreach (EssentialData sub in subDatas)
