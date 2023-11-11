@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class OrbSelectorUI : MonoBehaviour, IReceiver
+public class OrbSelectorUI : MonoBehaviour, ISender, IReceiver
 {
     private GameObject starUIPrefab;
     private GameObject planetUIPrefab;
@@ -48,27 +48,17 @@ public class OrbSelectorUI : MonoBehaviour, IReceiver
             OrbType _type = (OrbType)datas[i]["orbType"];
             btn.transform.GetComponentsInChildren<Text>()[0].text = _type.ToString();
             btn.transform.GetComponentsInChildren<Text>()[1].text = datas[i]["id"].ToString();
-            btn.onClick.AddListener(() => OnOrbSelected(GetNowOrbID(btn)));
+            btn.onClick.AddListener(() => GetNowOrbID(btn));
 
             orbBtnList.Add(btn);
         }
     }
 
-    public void SetEvent(UnityAction<int> func)
-    {
-        SetSelectOrbBtn(func);
-    }
-
-    private void SetSelectOrbBtn(UnityAction<int> func)
-    {
-        OnOrbSelected = func;
-    }
-
-    private int GetNowOrbID(Button btn)
+    private void GetNowOrbID(Button btn)
     {
         int nowOrbID = int.Parse(btn.transform.GetComponentsInChildren<Text>()[1].text);
         nowID = nowOrbID;
-        return nowOrbID;
+        SendData(nowOrbID);
     }
 
     private void SetSelector(Dictionary<string, float> data)
@@ -78,7 +68,25 @@ public class OrbSelectorUI : MonoBehaviour, IReceiver
     }
 
     //=======================================================================
+    private List<IReceiver> receivers = new List<IReceiver>();
 
+    public void Attach(IReceiver receiver)
+    {
+        receivers.Add(receiver);
+    }
+
+    public void Detach(IReceiver receiver)
+    {
+        receivers.Remove(receiver);
+    }
+
+    public void SendData<T>(T data)
+    {
+        foreach (IReceiver r in receivers)
+        {
+            r.ReceiveData(data);
+        }
+    }
     public void ReceiveData<T>(T _data)
     {
         if (_data is int)

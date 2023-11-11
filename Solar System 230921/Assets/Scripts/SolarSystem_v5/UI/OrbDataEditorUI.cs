@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class OrbDataEditorUI : MonoBehaviour, IReceiver
+public class OrbDataEditorUI : MonoBehaviour, ISender, IReceiver
 {
     public Dropdown orbTypeDrd;
 
@@ -40,6 +40,7 @@ public class OrbDataEditorUI : MonoBehaviour, IReceiver
     {
         SetAccess(_access);
         SetEditor(_datas);
+        SetApplyBtn();
     }
 
     private void SetAccess(bool value)
@@ -59,15 +60,11 @@ public class OrbDataEditorUI : MonoBehaviour, IReceiver
         applyBtn.gameObject.SetActive(value);
     }
 
-    public void SetEvent(UnityAction<Dictionary<string, float>> _syncFunc1)
-    {
-        SetApplyBtn(_syncFunc1);
-    }
-    private void SetApplyBtn(UnityAction<Dictionary<string, float>> func)
+    private void SetApplyBtn()
     {
         applyBtn.onClick.RemoveAllListeners();
         Debug.Log("Editor ApplyBtn pressed");
-        applyBtn.onClick.AddListener(() => func(GetOrbData()));
+        applyBtn.onClick.AddListener(() => SendData(GetOrbData()));
     }
 
     // 천체데이터관리창 세팅
@@ -102,7 +99,25 @@ public class OrbDataEditorUI : MonoBehaviour, IReceiver
     }
 
     //=======================================================================
+    private List<IReceiver> receivers = new List<IReceiver>();
 
+    public void Attach(IReceiver receiver)
+    {
+        receivers.Add(receiver);
+    }
+
+    public void Detach(IReceiver receiver)
+    {
+        receivers.Remove(receiver);
+    }
+
+    public void SendData<T>(T data)
+    {
+        foreach (IReceiver r in receivers)
+        {
+            r.ReceiveData(data);
+        }
+    }
     void IReceiver.ReceiveData<T>(T _data)
     {
         if (_data is bool)

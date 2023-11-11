@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class BackgroundUI : MonoBehaviour, IReceiver
+public class BackgroundUI : MonoBehaviour,ISender, IReceiver
 {
     private Transform camTrn;
     public Transform nowOrbTrn;
@@ -29,11 +29,7 @@ public class BackgroundUI : MonoBehaviour, IReceiver
     {
         SetAccess(_access);
         SetNowOrbTrn(_orbTrn);
-    }
-
-    public void SetEvent(UnityAction<bool> _syncFunc1)
-    {
-        SetSyncToggle(_syncFunc1);
+        SetSyncToggle();
     }
 
     private void SetAccess(bool value)
@@ -46,10 +42,10 @@ public class BackgroundUI : MonoBehaviour, IReceiver
         nowOrbTrn = _orbTrn;
     }
 
-    private void SetSyncToggle(UnityAction<bool> func)
+    private void SetSyncToggle()
     {
         camSyncTgl.onValueChanged.RemoveAllListeners();
-        camSyncTgl.onValueChanged.AddListener((m_Toggle) => { func(m_Toggle); });
+        camSyncTgl.onValueChanged.AddListener((m_Toggle) => { SendData(m_Toggle); });
     }
 
     public void UpdateUI()
@@ -59,7 +55,25 @@ public class BackgroundUI : MonoBehaviour, IReceiver
     }
 
     //=======================================================================
+    private List<IReceiver> receivers = new List<IReceiver>();
 
+    public void Attach(IReceiver receiver)
+    {
+        receivers.Add(receiver);
+    }
+
+    public void Detach(IReceiver receiver)
+    {
+        receivers.Remove(receiver);
+    }
+
+    public void SendData<T>(T data)
+    {
+        foreach (IReceiver r in receivers)
+        {
+            r.ReceiveData(data);
+        }
+    }
     public void ReceiveData<T>(T _data)
     {
         if (_data is bool)

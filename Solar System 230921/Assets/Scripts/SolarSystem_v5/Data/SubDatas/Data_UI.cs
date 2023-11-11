@@ -162,6 +162,10 @@ public class Data_UI : EssentialData, ISender, IReceiver
 
     public void ReceiveData<T>(T _data)
     {
+        if (_data is bool)
+        {
+            IsSyncMode = (bool)(object)_data;
+        }
         if (_data is int)
         {
             NowOrbID = (int)(object)_data;
