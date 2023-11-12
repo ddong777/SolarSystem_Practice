@@ -16,8 +16,6 @@ public class NetworkManager_v5 : MonoBehaviourPunCallbacks
     [SerializeField]
     private byte maxPlayerPerRoom = 4;
 
-    private static bool isInitialized = false;
-
     private void Awake()
     {
         if (instance == null)
@@ -31,12 +29,6 @@ public class NetworkManager_v5 : MonoBehaviourPunCallbacks
         }
 
         Init();
-
-        // 한번만 초기화
-        if (!isInitialized) 
-        {
-            Set();
-        }
     }
 
     public void Init()
@@ -45,22 +37,15 @@ public class NetworkManager_v5 : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.AutomaticallySyncScene = true;
             SetPlayerName();
-        } else
-        {
-            if (syncManager == null)
-            {
-                syncManager = FindObjectOfType<SyncManager_v5>();
-            }
-        }
+        } 
     }
 
-    public void Set()
+    public void Init(SyncManager_v5 manager)
     {
-        EventManager_v5 eventManager = FindObjectOfType<EventManager_v5>();
-        eventManager.ResetBaseEvents();
-        eventManager.AddBaseEvent("enter", Connect);
-        eventManager.AddBaseEvent("exit", LeaveRoom);
-        isInitialized = true;
+        if (syncManager == null && manager != null)
+        {
+            syncManager = manager;
+        }
     }
 
     private void SetPlayerName()

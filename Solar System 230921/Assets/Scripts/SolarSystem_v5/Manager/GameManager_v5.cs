@@ -6,12 +6,13 @@ public class GameManager_v5 : MonoBehaviour
 {
     private static GameManager_v5 instance;
 
-    public SolarSystemController_v5 solarSystem;
-    public UIManager_v5 uiManager;
-    public EventManager_v5 eventManager;
-    public CamController_v5 cameraController;
+    private SolarSystemController_v5 solarSystem;
+    private UIManager_v5 uiManager;
+    private EventManager_v5 eventManager;
+    private CamController_v5 cameraController;
 
-    public SyncManager_v5 serverSyncManager;
+    private SyncManager_v5 serverSyncManager;
+    private NetworkManager_v5 networkManager;
 
     private void Awake()
     {
@@ -36,6 +37,7 @@ public class GameManager_v5 : MonoBehaviour
     private void Init()
     {
         serverSyncManager = FindObjectOfType<SyncManager_v5>();
+        networkManager = FindObjectOfType<NetworkManager_v5>();
 
         solarSystem = FindObjectOfType<SolarSystemController_v5>();
         uiManager = FindObjectOfType<UIManager_v5>();
@@ -43,6 +45,7 @@ public class GameManager_v5 : MonoBehaviour
         cameraController = FindObjectOfType<CamController_v5>();
 
         serverSyncManager.Init();
+        networkManager.Init(serverSyncManager);
 
         solarSystem.Init();
         uiManager.Init();
@@ -56,9 +59,11 @@ public class GameManager_v5 : MonoBehaviour
         cameraController.Set();
 
         serverSyncManager.Set();
-        
+
         // 이벤트에 매니저 함수들 등록
         eventManager.resetEvents();
+        
+        eventManager.SetEvent("exit", networkManager.LeaveRoom);
 
         eventManager.SetEvent("isMaster", () => { Debug.Log("isMaster 값 변경"); });
         eventManager.SetEvent("isSyncMode", () => { Debug.Log("isSyncMode 값 변경"); });

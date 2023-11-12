@@ -22,10 +22,19 @@ public class LobbyUI : MonoBehaviour
             progressTxt = GameObject.Find(connectTxtName);
         }
 
-        StartBtn.GetComponent<Button>().onClick.AddListener(OnStartBtnPressed);
+        SetStartBtnEvent();
 
         StartBtn.SetActive(true);
         progressTxt.SetActive(false);
+    }
+
+    private void SetStartBtnEvent()
+    {
+        EventManager_v5 eventManager = FindObjectOfType<EventManager_v5>();
+        NetworkManager_v5 networkManager = FindObjectOfType<NetworkManager_v5>();
+        eventManager.resetEvents();
+        eventManager.SetEvent("enter", OnStartBtnPressed);
+        eventManager.AddEvent("enter", networkManager.Connect);
     }
 
     public void OnStartBtnPressed()
