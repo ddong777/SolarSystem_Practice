@@ -16,7 +16,8 @@ public class GameManager_v5 : MonoBehaviour
 
     private void Awake()
     {
-        Screen.SetResolution(960, 540, false);
+        //Screen.SetResolution(960, 540, false);
+        Screen.SetResolution(800, 450, false);
 
         if (instance == null)
         {
@@ -65,11 +66,11 @@ public class GameManager_v5 : MonoBehaviour
         
         eventManager.SetEvent("exit", networkManager.LeaveRoom);
 
-        eventManager.SetEvent("isMaster", () => { Debug.Log("isMaster 값 변경"); });
-        eventManager.SetEvent("isSyncMode", () => { Debug.Log("isSyncMode 값 변경"); });
-        eventManager.SetEvent("nowOrbID", () => { Debug.Log("nowOrbID 값 변경"); });
-        eventManager.SetEvent("orbDatas", () => { Debug.Log("orbDatas 값 변경"); });
-        eventManager.SetEvent("orbTrns", () => { Debug.Log("orbTrns 값 변경"); });
+        eventManager.SetEvent("isMaster", () => { Debug.Log("Event: isMaster 값 변경"); });
+        eventManager.SetEvent("isSyncMode", () => { Debug.Log("Event: isSyncMode 값 변경"); });
+        eventManager.SetEvent("nowOrbID", () => { Debug.Log("Event: nowOrbID 값 변경"); });
+        eventManager.SetEvent("orbDatas", () => { Debug.Log("Event: orbDatas 값 변경"); });
+        eventManager.SetEvent("orbTrns", () => { Debug.Log("Event: orbTrns 값 변경"); });
 
         eventManager.AddEvent("nowOrbID", cameraController.Set);
         eventManager.AddEvent("nowOrbID", serverSyncManager.Send_FromMaster);
