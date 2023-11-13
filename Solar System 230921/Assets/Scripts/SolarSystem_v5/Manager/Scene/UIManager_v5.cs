@@ -9,8 +9,8 @@ public class UIManager_v5 : MonoBehaviour
 {
     private Data_UI data;
 
-    public OrbDataEditorUI dataEditUI;
-    public OrbSelectorUI orbSelectUI;
+    public EditorUI dataEditUI;
+    public SelectorUI orbSelectUI;
     public BackgroundUI singleUI;
 
     private bool isReady = false;
@@ -31,8 +31,8 @@ public class UIManager_v5 : MonoBehaviour
         data = FindObjectOfType<Data_UI>();
         data.Init();
 
-        dataEditUI = GetComponentInChildren<OrbDataEditorUI>();
-        orbSelectUI = GetComponentInChildren<OrbSelectorUI>();
+        dataEditUI = GetComponentInChildren<EditorUI>();
+        orbSelectUI = GetComponentInChildren<SelectorUI>();
         singleUI = GetComponentInChildren<BackgroundUI>();
 
         dataEditUI.Init();
