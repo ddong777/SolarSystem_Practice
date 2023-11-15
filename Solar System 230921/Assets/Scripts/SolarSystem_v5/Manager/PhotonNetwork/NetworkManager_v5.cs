@@ -133,7 +133,7 @@ public class NetworkManager_v5 : MonoBehaviourPunCallbacks
         Debug.LogFormat("현재 플레이어 수 : {0}", PhotonNetwork.CurrentRoom.PlayerCount);
 
         // 플레이어 들어올 때 마다 마스터 클라이언트 업데이트
-        syncManager.Send_FromMaster();
+        syncManager.SendData_FromMaster();
     }
 
     public void LeaveRoom()
@@ -146,7 +146,7 @@ public class NetworkManager_v5 : MonoBehaviourPunCallbacks
     {
         Debug.Log("Space Room 퇴장: Lobby Scene으로 이동");
 
-        syncManager.Send_FromMaster();
+        syncManager.SendData_FromMaster();
         SceneManager.LoadScene(0);
     }
 

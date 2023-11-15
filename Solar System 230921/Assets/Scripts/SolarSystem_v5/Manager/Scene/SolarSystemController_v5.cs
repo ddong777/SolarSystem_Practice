@@ -98,9 +98,6 @@ public class SolarSystemController_v5 : MonoBehaviour
         }
         for (int i = 0; i < orbs.Count; i++)
         {
-            // 태양계 생성되기 전에 호출됐을때 실행되지 않도록 하기 위해
-            // 데이터 컨테이너에서 eventManager.GetEvent("orbDatas")?.Invoke(); 가
-            // 태양계 생성보다 먼저 호출되지 않도록 코드 고쳐야함
             if (orbs[i] == null)
             {
                 break;

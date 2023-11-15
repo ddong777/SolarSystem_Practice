@@ -28,20 +28,12 @@ public class SyncManager_v5 : MonoBehaviourPunCallbacks
         timer.AddFunction(()=> { PhotonNetwork.CurrentRoom.SetCustomProperties(data.SetCustomPropertiesPosNRot()); });
     }
 
-    public void Set()
-    {
-        if (PhotonNetwork.CurrentRoom == null)
-        {
-            Debug.Log("CurrentRoom이 없습니다.");
-            return;
-        }
-    }
     public void OnMasterClientChange()
     {
         data.IsMaster = IsMasterClient;
     }
 
-    public void Send_FromMaster()
+    public void SendData_FromMaster()
     {
         if (IsMasterClient &&
             data.CustomPropeties.ContainsKey(PropertyKey.ID.ToString()))
@@ -78,9 +70,10 @@ public class SyncManager_v5 : MonoBehaviourPunCallbacks
                 //Debug.Log("서버 데이터 받음: " + propertiesThatChanged);
                 data.CustomPropeties = propertiesThatChanged;
             }
-        } else if ((int)propertiesThatChanged[PropertyKey.ID.ToString()] == 1)
+        } 
+        else if ((int)propertiesThatChanged[PropertyKey.ID.ToString()] == 1)
         {
-            Send_FromMaster();
+            SendData_FromMaster();
             data.SetCustomProperty(PropertyKey.ID, 0);
         }
     }

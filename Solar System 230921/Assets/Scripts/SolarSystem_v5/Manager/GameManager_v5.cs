@@ -59,8 +59,6 @@ public class GameManager_v5 : MonoBehaviour
         uiManager.Set();
         cameraController.Set();
 
-        serverSyncManager.Set();
-
         // 이벤트에 매니저 함수들 등록
         eventManager.resetEvents();
         
@@ -73,12 +71,12 @@ public class GameManager_v5 : MonoBehaviour
         eventManager.SetEvent("orbTrns", () => { Debug.Log("Event: orbTrns 값 변경"); });
 
         eventManager.AddEvent("nowOrbID", cameraController.Set);
-        eventManager.AddEvent("nowOrbID", serverSyncManager.Send_FromMaster);
+        eventManager.AddEvent("nowOrbID", serverSyncManager.SendData_FromMaster);
 
         eventManager.AddEvent("orbDatas", solarSystem.UpdateAllOrb);
-        eventManager.AddEvent("orbDatas", serverSyncManager.Send_FromMaster);
+        eventManager.AddEvent("orbDatas", serverSyncManager.SendData_FromMaster);
 
-        eventManager.AddEvent("isSyncMode", serverSyncManager.Send_FromMaster);
+        eventManager.AddEvent("isSyncMode", serverSyncManager.SendData_FromMaster);
         eventManager.AddEvent("isSyncMode", serverSyncManager.SendFromClient);
     }
 }
